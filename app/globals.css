@@ -1,0 +1,41 @@
+@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap');
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  /* Dark mode defaults */
+  --bg:      #0D1117;
+  --bg2:     #161B22;
+  --bg3:     #1C2128;
+  --bg4:     #21262D;
+  --border:  #30363D;
+  --border2: #3D444D;
+  --text:    #E6EDF3;
+  --text2:   #8B949E;
+  --text3:   #6E7681;
+  /* Accent colors — fixed regardless of mode */
+  --blue:    #4F8EF7;
+  --green:   #2ECC8A;
+  --amber:   #F5A623;
+  --red:     #F75454;
+  --purple:  #9B6FF7;
+  --teal:    #1ACFCF;
+  --gold:    #FFD700;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Be Vietnam Pro', -apple-system, 'Segoe UI', sans-serif;
+  font-size: 13px;
+  line-height: 1.5;
+  min-height: 100vh;
+  transition: background .2s, color .2s;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--bg2); }
+::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+
+.mono { font-family: 'Space Mono', monospace; }
