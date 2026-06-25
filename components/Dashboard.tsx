@@ -11,9 +11,11 @@ import TabPosition  from './tabs/TabPosition'
 import TabMonthly   from './tabs/TabMonthly'
 import TabRaw       from './tabs/TabRaw'
 import TabOrders    from './tabs/TabOrders'
+import TabPersonnel from './tabs/TabPersonnel'
 
 const TABS = [
   { id:'overview', icon:'📊', label:'Tổng Quan'       },
+  { id:'personnel',icon:'👥', label:'Tổng Quan Nhân Sự' },
   { id:'orders',   icon:'📋', label:'Đơn Hàng'        },
   { id:'level',    icon:'🏆', label:'Bộ Level'         },
   { id:'funnel',   icon:'🎯', label:'Phễu Tuyển Dụng' },
@@ -173,6 +175,7 @@ export default function Dashboard({ data: initialData }: { data: DashboardData }
       {/* CONTENT */}
       <main className={styles.content}>
         {tab === 'overview'  && <TabOverview  data={data} />}
+        {tab === 'personnel' && <TabPersonnel data={data} />}
         {tab === 'orders'    && <TabOrders    data={data} />}
         {tab === 'level'     && <TabLevel     data={data} />}
         {tab === 'funnel'    && <TabFunnel    data={data} />}

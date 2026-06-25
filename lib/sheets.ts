@@ -2,6 +2,7 @@
 const SHEET_ID = '1YZltbbJSc1wDCMTxmwK3pmuOLAe190A8RT0YEim3Bys'
 const GID_MAIN  = '1209894745'
 const GID_ORDER = '1051409117' // Sheet "1.1 Đơn hàng"
+const GID_PERSONNEL = '679242831' // Sheet "Tổng quan nhân sự"
 
 function getCsvUrl(gid: string) {
   return `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${gid}`
@@ -82,7 +83,35 @@ export interface DashboardData {
   byPosition: PositionStat[]
   byNV: NVStat[]
   orders: OrderRow[]
+  personnel: PersonnelData
   updatedAt: string
+}
+
+// ── Tổng quan nhân sự ─────────────────────────────────────────────────────
+export interface PersonnelItem { label: string; value: number }
+export interface MonthFlow { month: number; hires: number; leaves: number }
+
+export interface PersonnelData {
+  total: number
+  male: number
+  female: number
+  fullTime: number
+  partTime: number
+  reportMonth: number
+  reportYear: number
+  hiresThisMonth: number
+  leavesThisMonth: number
+  byAge: PersonnelItem[]
+  byLevel: PersonnelItem[]      // Cấp bậc
+  byDivision: PersonnelItem[]   // Khối chức năng
+  byDepartment: PersonnelItem[] // Bộ phận
+  flow: MonthFlow[]             // 12 tháng: nhận việc / nghỉ việc
+}
+
+export const EMPTY_PERSONNEL: PersonnelData = {
+  total: 0, male: 0, female: 0, fullTime: 0, partTime: 0,
+  reportMonth: 0, reportYear: 0, hiresThisMonth: 0, leavesThisMonth: 0,
+  byAge: [], byLevel: [], byDivision: [], byDepartment: [], flow: [],
 }
 
 export interface Stats {
@@ -232,10 +261,68 @@ function parseOrders(rows: string[][]): OrderRow[] {
   return orders
 }
 
+// Parse sheet "Tổng quan nhân sự" — đọc bảng tóm tắt dạng STT|NỘI DUNG|THÔNG TIN|SỐ LƯỢNG|GHI CHÚ
+function parsePersonnel(rows: string[][]): PersonnelData {
+  const toInt = (s: string) => parseInt(String(s || '').replace(/[^\d-]/g, '')) || 0
+
+  // Tìm cột "NỘI DUNG" (mỏ neo của bảng tóm tắt)
+  let c = -1
+  for (const r of rows) {
+    const i = r.findIndex(x => normHeader(x) === 'noi dung')
+    if (i >= 0) { c = i; break }
+  }
+  if (c < 0) return { ...EMPTY_PERSONNEL }
+
+  // Tháng / năm báo cáo (ô "Tháng" ở phần đầu)
+  let reportMonth = 0, reportYear = 0
+  for (let i = 0; i < Math.min(rows.length, 4); i++) {
+    const j = rows[i].findIndex(x => normHeader(x) === 'thang')
+    if (j >= 0) { reportMonth = toInt(rows[i][j + 1]); reportYear = toInt(rows[i][j + 2]); break }
+  }
+
+  const d: PersonnelData = { ...EMPTY_PERSONNEL, reportMonth, reportYear,
+    byAge: [], byLevel: [], byDivision: [], byDepartment: [], flow: [] }
+  const hires: Record<number, number> = {}
+  const leaves: Record<number, number> = {}
+
+  for (const r of rows) {
+    const cat = (r[c] || '').trim()
+    const lab = (r[c + 1] || '').trim()
+    const val = toInt(r[c + 2])
+    const note = (r[c + 3] || '').trim()
+
+    // Hai bảng theo tháng phân biệt bằng cột ghi chú
+    if (note === 'Thêm mới')  { const m = toInt(r[c]); if (m >= 1 && m <= 12) hires[m]  = val; continue }
+    if (note === 'Nghỉ việc') { const m = toInt(r[c]); if (m >= 1 && m <= 12) leaves[m] = val; continue }
+
+    if (!cat || !lab) continue
+    const nc = normHeader(cat)
+    if (nc === 'nhan su' && normHeader(lab).includes('dang lam')) d.total = val
+    else if (nc === 'gioi tinh') {
+      if (normHeader(lab).includes('nam')) d.male = val
+      else if (normHeader(lab).includes('nu')) d.female = val
+    }
+    else if (nc === 'do tuoi')  d.byAge.push({ label: lab, value: val })
+    else if (nc === 'cap bac')  d.byLevel.push({ label: lab, value: val })
+    else if (nc === 'khoi')     d.byDivision.push({ label: lab, value: val })
+    else if (nc === 'bo phan')  d.byDepartment.push({ label: lab, value: val })
+    else if (nc === 'thoi gian') {
+      if (normHeader(lab).includes('full')) d.fullTime = val
+      else if (normHeader(lab).includes('part')) d.partTime = val
+    }
+  }
+
+  for (let m = 1; m <= 12; m++) d.flow.push({ month: m, hires: hires[m] || 0, leaves: leaves[m] || 0 })
+  d.hiresThisMonth  = hires[reportMonth] || 0
+  d.leavesThisMonth = leaves[reportMonth] || 0
+  return d
+}
+
 export async function fetchDashboardData(): Promise<DashboardData> {
-  const [resMain, resOrder] = await Promise.allSettled([
+  const [resMain, resOrder, resPersonnel] = await Promise.allSettled([
     fetch(getCsvUrl(GID_MAIN),  { cache: 'no-store' }),
     fetch(getCsvUrl(GID_ORDER), { cache: 'no-store' }),
+    fetch(getCsvUrl(GID_PERSONNEL), { cache: 'no-store' }),
   ])
 
   if (resMain.status === 'rejected' || !resMain.value.ok)
@@ -248,6 +335,12 @@ export async function fetchDashboardData(): Promise<DashboardData> {
   if (resOrder.status === 'fulfilled' && resOrder.value.ok) {
     const textOrder = await resOrder.value.text()
     orders = parseOrders(parseCsv(textOrder))
+  }
+
+  let personnel: PersonnelData = { ...EMPTY_PERSONNEL }
+  if (resPersonnel.status === 'fulfilled' && resPersonnel.value.ok) {
+    const textPersonnel = await resPersonnel.value.text()
+    personnel = parsePersonnel(parseCsv(textPersonnel))
   }
 
   let dataStart = 0
@@ -393,6 +486,7 @@ export async function fetchDashboardData(): Promise<DashboardData> {
     levelStats, byMonth, byWeek, bySource, byPosition,
     byNV: [...nvMap.values()].sort((a,b) => b.total-a.total),
     orders,
+    personnel,
     updatedAt: new Date().toLocaleString('vi-VN', { timeZone: 'Asia/Ho_Chi_Minh' }),
   }
 }
