@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import type { DashboardData } from '@/lib/sheets'
 import { Card, CardTitle, KpiCard, Grid, Space, FunnelBar } from '../ui'
-import { BarChart, Bar, Cell, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts'
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts'
 
 const p = (n: number, d: number) => d > 0 ? `${(n/d*100).toFixed(1)}%` : '0%'
 
@@ -77,12 +77,15 @@ export default function TabOverview({ data }: { data: DashboardData }) {
     { label:'UV Đủ 10 Ngày',      value:s.d10,      sub:`${p(s.d10,s.total)} tổng CV · L9`,      color:'#FFD84D', icon:'⭐', pct:s.d10/(s.total||1)*100 },
   ]
 
-  const monthChart = data.byMonth.map(m => ({
-    name: m.label,
-    'Tổng CV': m.total,
-    'HR Pass': m.hrPass,
-    'Nhận việc': m.nhanViec,
-  }))
+  // Lọc một tháng → biểu đồ chỉ hiện tháng đó; Cả năm → hiện đủ 12 tháng
+  const monthChart = data.byMonth
+    .filter(m => selectedMonth === null || +m.month === selectedMonth)
+    .map(m => ({
+      name: m.label,
+      'Tổng CV': m.total,
+      'HR Pass': m.hrPass,
+      'Nhận việc': m.nhanViec,
+    }))
 
   const COLORS = ['#33A6FF', '#00E08F', '#FFD84D']
 
@@ -173,7 +176,7 @@ export default function TabOverview({ data }: { data: DashboardData }) {
 
         {/* Chart tháng */}
         <Card>
-          <CardTitle sub="So sánh CV / Pass HR / Nhận việc theo tháng">📅 Xu Hướng Theo Tháng</CardTitle>
+          <CardTitle sub={`So sánh CV / Pass HR / Nhận việc — ${monthLabel}`}>📅 Xu Hướng Theo Tháng</CardTitle>
           <ResponsiveContainer width="100%" height={220}>
             <BarChart data={monthChart} barGap={4}>
               <XAxis dataKey="name" tick={{ fill:'var(--text2)', fontSize:11 }} axisLine={false} tickLine={false} />
@@ -184,12 +187,7 @@ export default function TabOverview({ data }: { data: DashboardData }) {
                 itemStyle={{ color:'var(--text2)' }}
               />
               {['Tổng CV','HR Pass','Nhận việc'].map((key, i) => (
-                <Bar key={key} dataKey={key} fill={COLORS[i]} radius={[4,4,0,0]}>
-                  {monthChart.map((entry, idx) => (
-                    <Cell key={idx}
-                      fillOpacity={selectedMonth === null || entry.name === `T${selectedMonth}` ? 1 : 0.25} />
-                  ))}
-                </Bar>
+                <Bar key={key} dataKey={key} fill={COLORS[i]} radius={[4,4,0,0]} maxBarSize={60} />
               ))}
             </BarChart>
           </ResponsiveContainer>
