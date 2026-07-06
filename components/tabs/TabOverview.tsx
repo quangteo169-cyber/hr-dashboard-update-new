@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import type { DashboardData } from '@/lib/sheets'
 import { Card, CardTitle, KpiCard, Grid, Space, FunnelBar } from '../ui'
-import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts'
+import { BarChart, Bar, Cell, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts'
 
 const p = (n: number, d: number) => d > 0 ? `${(n/d*100).toFixed(1)}%` : '0%'
 
@@ -36,6 +36,33 @@ export default function TabOverview({ data }: { data: DashboardData }) {
   const [selectedMonth, setSelectedMonth] = useState<number | null>(null)
   const filtered = filterByMonth(data, selectedMonth)
   const { stats: s } = filtered
+
+  // Nguồn CV + NV phụ trách tính lại từ danh sách UV đã lọc theo tháng,
+  // để mọi khối trên tab đều nhảy theo bộ lọc (không dùng tổng hợp cả năm)
+  const bySource = (() => {
+    const map = new Map<string, { nguon: string; total: number; hrPass: number }>()
+    for (const c of filtered.candidates) {
+      const key = c.nguon || 'Khác'
+      if (!map.has(key)) map.set(key, { nguon: key, total: 0, hrPass: 0 })
+      const item = map.get(key)!
+      item.total++
+      if (c.hrLocCV === 'Pass') item.hrPass++
+    }
+    return [...map.values()].sort((a, b) => b.total - a.total)
+  })()
+
+  const byNV = (() => {
+    const map = new Map<string, { nvTD: string; total: number; hrPass: number; nhanViec: number }>()
+    for (const c of filtered.candidates) {
+      const key = c.nvTD || 'Khác'
+      if (!map.has(key)) map.set(key, { nvTD: key, total: 0, hrPass: 0, nhanViec: 0 })
+      const item = map.get(key)!
+      item.total++
+      if (c.hrLocCV === 'Pass')  item.hrPass++
+      if (c.uvNhanViec === 'Có') item.nhanViec++
+    }
+    return [...map.values()].sort((a, b) => b.total - a.total)
+  })()
 
   const kpis1 = [
     { label:'Tổng CV Thu Thập', value:s.total,      sub:'L0 — Toàn bộ CV nhận được',            color:'#33A6FF', icon:'📥', pct:100 },
@@ -157,7 +184,12 @@ export default function TabOverview({ data }: { data: DashboardData }) {
                 itemStyle={{ color:'var(--text2)' }}
               />
               {['Tổng CV','HR Pass','Nhận việc'].map((key, i) => (
-                <Bar key={key} dataKey={key} fill={COLORS[i]} radius={[4,4,0,0]} />
+                <Bar key={key} dataKey={key} fill={COLORS[i]} radius={[4,4,0,0]}>
+                  {monthChart.map((entry, idx) => (
+                    <Cell key={idx}
+                      fillOpacity={selectedMonth === null || entry.name === `T${selectedMonth}` ? 1 : 0.25} />
+                  ))}
+                </Bar>
               ))}
             </BarChart>
           </ResponsiveContainer>
@@ -190,13 +222,13 @@ export default function TabOverview({ data }: { data: DashboardData }) {
       {/* Source + NV */}
       <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:16 }}>
         <Card>
-          <CardTitle sub="Top nguồn CV theo số lượng">📡 Nguồn CV</CardTitle>
-          {data.bySource.slice(0,6).map((src, i) => (
+          <CardTitle sub={`Top nguồn CV theo số lượng — ${monthLabel}`}>📡 Nguồn CV</CardTitle>
+          {bySource.slice(0,6).map((src, i) => (
             <div key={src.nguon} style={{ display:'flex', alignItems:'center', gap:10, marginBottom:8 }}>
               <div style={{ fontSize:11, color:'var(--text3)', width:18, textAlign:'right' }}>#{i+1}</div>
               <div style={{ flex:1, fontSize:11, color:'var(--text)', fontWeight:500 }}>{src.nguon}</div>
               <div style={{ width:80, height:4, background:'var(--bg4)', borderRadius:2, overflow:'hidden' }}>
-                <div style={{ height:'100%', width:`${data.bySource[0]?.total>0?src.total/data.bySource[0].total*100:0}%`, background:'#33A6FF', borderRadius:2 }} />
+                <div style={{ height:'100%', width:`${bySource[0]?.total>0?src.total/bySource[0].total*100:0}%`, background:'#33A6FF', borderRadius:2 }} />
               </div>
               <div style={{ fontFamily:'Space Mono,monospace', fontSize:11, color:'#33A6FF', width:30, textAlign:'right' }}>{src.total}</div>
               <div style={{ fontSize:10, color:'#00E08F', width:36, textAlign:'right' }}>{p(src.hrPass,src.total)}</div>
@@ -205,8 +237,8 @@ export default function TabOverview({ data }: { data: DashboardData }) {
         </Card>
 
         <Card>
-          <CardTitle sub="Chuyên viên phụ trách tuyển dụng">👤 NV Phụ Trách</CardTitle>
-          {data.byNV.map((n, i) => (
+          <CardTitle sub={`Chuyên viên phụ trách tuyển dụng — ${monthLabel}`}>👤 NV Phụ Trách</CardTitle>
+          {byNV.map((n, i) => (
             <div key={n.nvTD} style={{
               background:'var(--bg4)', borderRadius:10, padding:'12px 14px', marginBottom:8,
               border:'1px solid var(--border)'
@@ -222,7 +254,7 @@ export default function TabOverview({ data }: { data: DashboardData }) {
                 </div>
               </div>
               <div style={{ height:3, background:'var(--border)', borderRadius:2 }}>
-                <div style={{ height:'100%', width:`${data.stats.total>0?n.total/data.stats.total*100:0}%`, background:['#B44CFF','#FFAA2B'][i]||'#33A6FF', borderRadius:2 }} />
+                <div style={{ height:'100%', width:`${s.total>0?n.total/s.total*100:0}%`, background:['#B44CFF','#FFAA2B'][i]||'#33A6FF', borderRadius:2 }} />
               </div>
               <div style={{ display:'flex', gap:12, marginTop:8, fontSize:10, color:'var(--text3)' }}>
                 <span>Pass HR: <b style={{ color:'#00E08F' }}>{n.hrPass}</b></span>
