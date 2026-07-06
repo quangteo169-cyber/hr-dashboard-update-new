@@ -318,6 +318,55 @@ function parsePersonnel(rows: string[][]): PersonnelData {
   for (let m = 1; m <= 12; m++) d.flow.push({ month: m, hires: hires[m] || 0, leaves: leaves[m] || 0 })
   d.hiresThisMonth  = hires[reportMonth] || 0
   d.leavesThisMonth = leaves[reportMonth] || 0
+
+  // --- Ưu tiên dãy thẻ KPI ở đầu sheet (nguồn số liệu chuẩn) ---
+  // Layout: hàng giá trị (126 | 55 71 | 69 | 56 | 2 | 2) nằm ngay TRÊN hàng nhãn
+  // ("Tổng nhân sự", "Full time", "Part time", "Nhận việc", "Đã nghỉ").
+  // Bảng tóm tắt bên dưới chỉ còn là nguồn dự phòng nếu không tìm thấy thẻ.
+  const isNum = (s: string | undefined) => {
+    const t = (s || '').trim()
+    return t !== '' && !t.includes('%') && /^[\d.,\s]+$/.test(t) && /\d/.test(t)
+  }
+  const findCard = (name: string): { value: number; row: number; col: number } | null => {
+    for (let ri = 1; ri < Math.min(rows.length, 12); ri++) {
+      const row = rows[ri] || []
+      for (let ci = 0; ci < row.length; ci++) {
+        if (!normHeader(row[ci]).includes(name)) continue
+        // Giá trị nằm phía trên nhãn (lệch tối đa 2 hàng, ±2 cột do merge cell).
+        // Quét đúng cột nhãn trước rồi mới lan dần ra hai bên để không
+        // vớ nhầm số của thẻ KPI đứng cạnh.
+        for (const off of [0, 1, -1, 2, -2]) {
+          const cc = ci + off
+          if (cc < 0) continue
+          for (let up = 1; up <= 2; up++) {
+            const vr = rows[ri - up]
+            if (vr && isNum(vr[cc])) return { value: toInt(vr[cc]), row: ri - up, col: cc }
+          }
+        }
+      }
+    }
+    return null
+  }
+  const cardTotal = findCard('tong nhan su')
+  const cardFT    = findCard('full time')
+  const cardPT    = findCard('part time')
+  const cardHire  = findCard('nhan viec')
+  const cardLeave = findCard('da nghi')
+  if (cardTotal) d.total           = cardTotal.value
+  if (cardFT)    d.fullTime        = cardFT.value
+  if (cardPT)    d.partTime        = cardPT.value
+  if (cardHire)  d.hiresThisMonth  = cardHire.value
+  if (cardLeave) d.leavesThisMonth = cardLeave.value
+  // Giới tính: hai số (nam, nữ) nằm giữa cột Tổng nhân sự và Full time trên hàng giá trị
+  if (cardTotal && cardFT && cardFT.col > cardTotal.col) {
+    const vr = rows[cardTotal.row] || []
+    const nums: number[] = []
+    for (let cc = cardTotal.col + 1; cc < cardFT.col; cc++) {
+      if (isNum(vr[cc])) nums.push(toInt(vr[cc]))
+    }
+    if (nums.length >= 2) { d.male = nums[0]; d.female = nums[nums.length - 1] }
+  }
+
   return d
 }
 
