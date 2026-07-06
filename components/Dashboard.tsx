@@ -82,8 +82,10 @@ export default function Dashboard({ data: initialData }: { data: DashboardData }
       root.style.setProperty('--text3',   '#66718A')
       root.style.setProperty('--shadow-sm', '0 1px 2px rgba(0,0,0,.35)')
       root.style.setProperty('--shadow',    '0 1px 2px rgba(0,0,0,.4), 0 12px 32px -16px rgba(0,0,0,.7)')
+      root.style.setProperty('--shadow-lg', '0 2px 4px rgba(0,0,0,.35), 0 24px 48px -20px rgba(0,0,0,.65)')
       root.style.setProperty('--card-hi',   'rgba(255,255,255,.045)')
-      root.style.setProperty('--ambient',   'radial-gradient(1200px 460px at 50% -8%, rgba(79,142,247,.12), rgba(155,111,247,.06) 38%, transparent 68%)')
+      root.style.setProperty('--row-hover', 'rgba(79,142,247,.09)')
+      root.style.setProperty('--ambient',   'radial-gradient(1200px 460px at 50% -8%, rgba(79,142,247,.14), rgba(155,111,247,.07) 38%, transparent 68%), radial-gradient(900px 380px at 88% 0%, rgba(26,207,207,.07), transparent 60%)')
       document.body.style.background = '#0B0E14'
     } else {
       root.style.setProperty('--bg',      '#F1F4F9')
@@ -97,8 +99,10 @@ export default function Dashboard({ data: initialData }: { data: DashboardData }
       root.style.setProperty('--text3',   '#8A93A6')
       root.style.setProperty('--shadow-sm', '0 1px 2px rgba(16,24,40,.05)')
       root.style.setProperty('--shadow',    '0 1px 2px rgba(16,24,40,.06), 0 12px 32px -16px rgba(16,24,40,.16)')
+      root.style.setProperty('--shadow-lg', '0 2px 4px rgba(16,24,40,.06), 0 24px 48px -20px rgba(16,24,40,.22)')
       root.style.setProperty('--card-hi',   'rgba(255,255,255,.9)')
-      root.style.setProperty('--ambient',   'radial-gradient(1200px 460px at 50% -8%, rgba(79,142,247,.10), rgba(155,111,247,.04) 38%, transparent 70%)')
+      root.style.setProperty('--row-hover', 'rgba(79,142,247,.08)')
+      root.style.setProperty('--ambient',   'radial-gradient(1200px 460px at 50% -8%, rgba(79,142,247,.10), rgba(155,111,247,.04) 38%, transparent 70%), radial-gradient(900px 380px at 88% 0%, rgba(26,207,207,.05), transparent 60%)')
       document.body.style.background = '#F1F4F9'
     }
   }, [dark])
@@ -119,14 +123,8 @@ export default function Dashboard({ data: initialData }: { data: DashboardData }
           <button
             onClick={() => setDark(d => !d)}
             title={dark ? 'Chuyển sang Light Mode' : 'Chuyển sang Dark Mode'}
-            style={{
-              marginRight:10, padding:'6px 13px', borderRadius:10,
-              border:'1px solid var(--border)', background:'var(--bg3)',
-              color:'var(--text)', fontSize:11, fontWeight:500, cursor:'pointer',
-              boxShadow:'var(--shadow-sm)',
-              display:'flex', alignItems:'center', gap:6, fontFamily:'inherit',
-              transition:'border-color .15s, background .15s',
-            }}
+            className={styles.headerBtn}
+            style={{ marginRight:10 }}
           >
             {dark ? '☀️ Light' : '🌙 Dark'}
           </button>
@@ -136,15 +134,8 @@ export default function Dashboard({ data: initialData }: { data: DashboardData }
             onClick={fetchData}
             disabled={refreshing}
             title="Cập nhật ngay"
-            style={{
-              marginRight:16, padding:'6px 13px', borderRadius:10,
-              border:'1px solid var(--border)', background:'var(--bg3)',
-              color:refreshing ? 'var(--text3)' : '#2ECC8A',
-              fontSize:11, fontWeight:500, cursor:refreshing?'default':'pointer',
-              boxShadow:'var(--shadow-sm)',
-              display:'flex', alignItems:'center', gap:6, fontFamily:'inherit',
-              transition:'border-color .15s, background .15s',
-            }}
+            className={styles.headerBtn}
+            style={{ marginRight:16, color:refreshing ? 'var(--text3)' : '#2ECC8A' }}
           >
             {refreshing ? '⏳ Đang tải...' : `🔄 ${countdown}s`}
           </button>

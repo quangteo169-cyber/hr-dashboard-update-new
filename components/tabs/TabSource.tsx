@@ -14,7 +14,7 @@ export default function TabSource({ data }: { data: DashboardData }) {
         <div style={{ overflowX:'auto' }}>
           <table style={{ width:'100%', borderCollapse:'collapse', fontSize:11 }}>
             <thead>
-              <tr style={{ borderBottom:'1px solid #30363D' }}>
+              <tr style={{ borderBottom:'1px solid var(--border2)' }}>
                 {['#','Nguồn CV','Tổng CV','% Tổng','HR Pass','Tỷ lệ Pass','PV','Nhận việc','Hiệu quả','Bar CV'].map((h,i) => (
                   <th key={h} style={{ padding:'8px 10px', textAlign:i<=1?'left':'center',
                     color:'var(--text3)', fontSize:9, fontWeight:700, textTransform:'uppercase' }}>{h}</th>

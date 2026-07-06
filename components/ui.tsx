@@ -4,12 +4,7 @@ import React from 'react'
 /* ── CARD ─────────────────────────────────────────────────── */
 export function Card({ children, style }: { children: React.ReactNode; style?: React.CSSProperties }) {
   return (
-    <div style={{
-      background:'var(--bg3)', border:'1px solid var(--border)',
-      borderRadius:14, padding:'18px 20px',
-      boxShadow:'var(--shadow), inset 0 1px 0 var(--card-hi)',
-      ...style
-    }}>
+    <div className="ui-card" style={style}>
       {children}
     </div>
   )
@@ -19,8 +14,11 @@ export function Card({ children, style }: { children: React.ReactNode; style?: R
 export function CardTitle({ children, sub }: { children: React.ReactNode; sub?: string }) {
   return (
     <div style={{ marginBottom: sub ? 4 : 14 }}>
-      <div style={{ fontFamily:'Space Grotesk,Be Vietnam Pro,sans-serif', fontSize:14, fontWeight:600, letterSpacing:'-.01em', color:'var(--text)' }}>{children}</div>
-      {sub && <div style={{ fontSize:11, color:'var(--text3)', marginTop:3, marginBottom:12 }}>{sub}</div>}
+      <div style={{ display:'flex', alignItems:'center', gap:8 }}>
+        <span style={{ width:4, height:15, borderRadius:2, background:'var(--accent-grad)', flexShrink:0 }} />
+        <span style={{ fontFamily:'Space Grotesk,Be Vietnam Pro,sans-serif', fontSize:14, fontWeight:700, letterSpacing:'-.01em', color:'var(--text)' }}>{children}</span>
+      </div>
+      {sub && <div style={{ fontSize:11, color:'var(--text3)', marginTop:3, marginBottom:12, paddingLeft:12 }}>{sub}</div>}
     </div>
   )
 }
@@ -34,34 +32,43 @@ export function KpiCard({
 }) {
   const c = color || '#4F8EF7'
   return (
-    <div style={{
-      background:'var(--bg3)', border:`1px solid ${c}44`,
-      borderRadius:12, padding:'16px 18px', position:'relative', overflow:'hidden'
-    }}>
-      <div style={{ position:'absolute', top:0, left:0, right:0, height:2,
-        background:`linear-gradient(90deg,${c},transparent)` }} />
+    <div className="ui-kpi" style={{
+      ['--kpi-c' as string]: c,
+      background:`linear-gradient(140deg, ${c}16, transparent 52%), var(--bg3)`,
+      border:`1px solid ${c}3a`, boxShadow:'var(--shadow-sm)',
+      borderRadius:14, padding:'16px 18px', position:'relative', overflow:'hidden'
+    } as React.CSSProperties}>
+      <div style={{ position:'absolute', top:0, left:0, right:0, height:3,
+        background:`linear-gradient(90deg,${c},${c}55 60%,transparent)` }} />
+      <div style={{ position:'absolute', top:-34, right:-34, width:120, height:120, borderRadius:'50%',
+        background:`radial-gradient(circle, ${c}24, transparent 65%)`, pointerEvents:'none' }} />
       <div style={{ display:'flex', justifyContent:'space-between', alignItems:'flex-start', marginBottom:8 }}>
         <div style={{ fontSize:10, fontWeight:700, textTransform:'uppercase',
           letterSpacing:'0.8px', color:'var(--text2)' }}>
           {label}
         </div>
         {icon && (
-          <div style={{ width:28, height:28, borderRadius:7,
-            background:`${c}22`, display:'flex', alignItems:'center',
-            justifyContent:'center', fontSize:14 }}>
+          <div style={{ width:30, height:30, borderRadius:9,
+            background:`linear-gradient(135deg, ${c}30, ${c}0e)`,
+            border:`1px solid ${c}45`, boxShadow:`0 4px 12px -4px ${c}55`,
+            display:'flex', alignItems:'center',
+            justifyContent:'center', fontSize:15 }}>
             {icon}
           </div>
         )}
       </div>
-      <div style={{ fontFamily:'Space Mono,monospace', fontSize:30,
-        fontWeight:700, color:c, lineHeight:1, marginBottom:6 }}>
+      <div style={{ fontFamily:'Space Grotesk,Be Vietnam Pro,sans-serif', fontSize:32,
+        fontWeight:700, letterSpacing:'-0.02em', color:c, lineHeight:1, marginBottom:6,
+        textShadow:`0 0 26px ${c}50` }}>
         {value}
       </div>
       {sub && <div style={{ fontSize:10, color:'var(--text3)' }}>{sub}</div>}
       {pct !== undefined && (
-        <div style={{ marginTop:10, height:3, background:'var(--bg4)', borderRadius:2 }}>
-          <div style={{ height:'100%', width:`${Math.min(pct,100)}%`,
-            background:c, borderRadius:2, transition:'width .8s ease' }} />
+        <div style={{ marginTop:10, height:5, background:'var(--bg4)', borderRadius:3, position:'relative', overflow:'hidden' }}>
+          <div className="ui-grow" style={{ height:'100%', width:`${Math.min(pct,100)}%`,
+            background:`linear-gradient(90deg,${c},${c}99)`, borderRadius:3,
+            boxShadow:`0 0 10px ${c}66` }} />
+          <span className="ui-shine" />
         </div>
       )}
     </div>
@@ -87,9 +94,11 @@ export function Grid({ cols, gap, children }: {
 export function SectionHeader({ children }: { children: React.ReactNode }) {
   return (
     <div style={{
-      background:'var(--bg2)', borderRadius:8, padding:'10px 16px',
-      fontSize:12, fontWeight:600, color:'var(--text)',
-      marginBottom:12, borderLeft:'3px solid #4F8EF7'
+      background:'linear-gradient(90deg, color-mix(in srgb, #4F8EF7 13%, var(--bg2)), var(--bg2) 70%)',
+      border:'1px solid var(--border)', borderLeft:'3px solid #4F8EF7',
+      borderRadius:10, padding:'11px 16px',
+      fontSize:12.5, fontWeight:600, color:'var(--text)',
+      marginBottom:14, boxShadow:'var(--shadow-sm)',
     }}>
       {children}
     </div>
@@ -99,10 +108,11 @@ export function SectionHeader({ children }: { children: React.ReactNode }) {
 /* ── PCT BAR ──────────────────────────────────────────────── */
 export function PctBar({ value, max, color }: { value: number; max: number; color?: string }) {
   const w = max > 0 ? Math.round(value / max * 100) : 0
+  const c = color || '#4F8EF7'
   return (
-    <div style={{ height:4, background:'var(--bg4)', borderRadius:2, overflow:'hidden', minWidth:60 }}>
-      <div style={{ height:'100%', width:`${w}%`,
-        background:color||'#4F8EF7', borderRadius:2 }} />
+    <div style={{ height:5, background:'var(--bg4)', borderRadius:3, overflow:'hidden', minWidth:60 }}>
+      <div className="ui-grow" style={{ height:'100%', width:`${w}%`,
+        background:`linear-gradient(90deg,${c},${c}99)`, borderRadius:3 }} />
     </div>
   )
 }
@@ -114,16 +124,17 @@ export function Table({ headers, rows, colColors }: {
   colColors?: (string | undefined)[]
 }) {
   return (
-    <div style={{ overflowX:'auto' }}>
+    <div style={{ overflowX:'auto', borderRadius:10 }}>
       <table style={{ width:'100%', borderCollapse:'collapse', fontSize:11 }}>
         <thead>
           <tr>
             {headers.map((h, i) => (
               <th key={i} style={{
-                padding:'8px 10px', textAlign: i===0 ? 'left' : 'center',
-                color:'var(--text3)', fontWeight:600, fontSize:9,
+                padding:'9px 10px', textAlign: i===0 ? 'left' : 'center',
+                color:'var(--text3)', fontWeight:700, fontSize:9,
                 textTransform:'uppercase', letterSpacing:'0.6px',
-                borderBottom:'1px solid var(--border)', whiteSpace:'nowrap',
+                borderBottom:'1px solid var(--border2)', whiteSpace:'nowrap',
+                background:'var(--bg2)',
               }}>{h}</th>
             ))}
           </tr>
@@ -141,7 +152,7 @@ export function Table({ headers, rows, colColors }: {
                   color: colColors?.[ci] || 'var(--text2)',
                   borderBottom:'1px solid var(--border)',
                   fontFamily: typeof cell === 'number' ? 'Space Mono,monospace' : undefined,
-                  fontWeight: ci===0 ? 500 : undefined,
+                  fontWeight: ci===0 ? 600 : undefined,
                   fontSize: typeof cell === 'number' ? 12 : 11,
                 }}>
                   {cell}
@@ -165,19 +176,23 @@ export function FunnelBar({ label, count, total, color, sublabel }: {
       <div style={{ width:160, fontSize:10, color:'var(--text2)', textAlign:'right', flexShrink:0 }}>
         {label}
       </div>
-      <div style={{ flex:1, height:28, background:'var(--bg4)', borderRadius:6, overflow:'hidden', position:'relative' }}>
-        <div style={{
+      <div style={{ flex:1, height:30, background:'var(--bg4)', borderRadius:8, overflow:'hidden', position:'relative',
+        boxShadow:'inset 0 1px 2px rgba(0,0,0,.15)' }}>
+        <div className="ui-grow" style={{
           position:'absolute', inset:0, width:`${w}%`,
-          background:`linear-gradient(90deg,${color}cc,${color}88)`,
-          borderRadius:6, display:'flex', alignItems:'center',
-          paddingLeft:8, minWidth: count > 0 ? 40 : 0,
+          background:`linear-gradient(90deg,${color}e6,${color}90)`,
+          borderRadius:8, display:'flex', alignItems:'center',
+          paddingLeft:9, minWidth: count > 0 ? 40 : 0,
+          boxShadow:`inset 0 1px 0 rgba(255,255,255,.18), 0 0 14px ${color}44`,
         }}>
           {count > 0 && (
             <span style={{ fontSize:10, fontWeight:700, color:'#fff',
-              fontFamily:'Space Mono,monospace', whiteSpace:'nowrap' }}>
+              fontFamily:'Space Mono,monospace', whiteSpace:'nowrap',
+              textShadow:'0 1px 2px rgba(0,0,0,.35)' }}>
               {count}
             </span>
           )}
+          <span className="ui-shine" />
         </div>
       </div>
       <div style={{ width:90, textAlign:'right', flexShrink:0 }}>
@@ -197,9 +212,10 @@ export function FunnelBar({ label, count, total, color, sublabel }: {
 export function Badge({ text, color }: { text: string; color: string }) {
   return (
     <span style={{
-      display:'inline-block', padding:'2px 8px', borderRadius:4,
+      display:'inline-block', padding:'2px 9px', borderRadius:999,
       fontSize:9, fontWeight:700,
-      background:`${color}22`, color, border:`1px solid ${color}44`
+      background:`${color}22`, color, border:`1px solid ${color}44`,
+      boxShadow:`0 2px 8px -4px ${color}55`,
     }}>
       {text}
     </span>

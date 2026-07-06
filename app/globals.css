@@ -17,8 +17,11 @@
   /* Elevation + ambient (theme-dependent, also set via JS) */
   --shadow-sm: 0 1px 2px rgba(0,0,0,.35);
   --shadow:    0 1px 2px rgba(0,0,0,.4), 0 12px 32px -16px rgba(0,0,0,.7);
-  --ambient:   radial-gradient(1200px 460px at 50% -8%, rgba(79,142,247,.12), rgba(155,111,247,.06) 38%, transparent 68%);
+  --shadow-lg: 0 2px 4px rgba(0,0,0,.35), 0 24px 48px -20px rgba(0,0,0,.65);
+  --ambient:   radial-gradient(1200px 460px at 50% -8%, rgba(79,142,247,.14), rgba(155,111,247,.07) 38%, transparent 68%),
+               radial-gradient(900px 380px at 88% 0%, rgba(26,207,207,.07), transparent 60%);
   --card-hi:   rgba(255,255,255,.045);
+  --row-hover: rgba(79,142,247,.09);
 
   /* Accent colors — fixed regardless of mode */
   --blue:    #4F8EF7;
@@ -28,6 +31,9 @@
   --purple:  #9B6FF7;
   --teal:    #1ACFCF;
   --gold:    #FFD700;
+
+  /* Signature gradient used across the UI */
+  --accent-grad: linear-gradient(135deg, #4F8EF7, #9B6FF7 55%, #1ACFCF);
 }
 
 body {
@@ -52,6 +58,66 @@ body {
 .display  { font-family: 'Space Grotesk', 'Be Vietnam Pro', sans-serif; }
 
 ::selection { background: rgba(79,142,247,.3); }
+
+/* ── ANIMATIONS ─────────────────────────────────────────────── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes growW { from { width: 0; } }
+@keyframes shineSweep {
+  0%        { transform: translateX(-120%); }
+  55%, 100% { transform: translateX(320%); }
+}
+
+/* ── SHARED UI CLASSES (styled via components/ui.tsx) ───────── */
+
+/* Card — hover lift + deeper elevation */
+.ui-card {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 18px 20px;
+  box-shadow: var(--shadow), inset 0 1px 0 var(--card-hi);
+  transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease;
+}
+.ui-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--border2);
+  box-shadow: var(--shadow-lg), inset 0 1px 0 var(--card-hi);
+}
+
+/* Table rows inside any card — hover highlight (beats inline zebra bg) */
+.ui-card tbody tr { transition: background .12s ease; }
+.ui-card tbody tr:hover { background: var(--row-hover) !important; }
+
+/* KPI tile — lift + glow in its own accent color (--kpi-c) */
+.ui-kpi { transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease; }
+.ui-kpi:hover {
+  transform: translateY(-2px);
+  border-color: color-mix(in srgb, var(--kpi-c, var(--blue)) 55%, transparent) !important;
+  box-shadow: 0 16px 36px -16px color-mix(in srgb, var(--kpi-c, var(--blue)) 60%, transparent);
+}
+
+/* Inputs / selects — focus ring */
+.ui-input { transition: box-shadow .15s ease, border-color .15s ease; }
+.ui-input:hover  { box-shadow: 0 0 0 2px rgba(79,142,247,.12); }
+.ui-input:focus  { box-shadow: 0 0 0 3px rgba(79,142,247,.22); }
+
+/* Filter chips (month selector, …) */
+.chip { transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease, color .15s ease, background .15s ease; }
+.chip:hover { transform: translateY(-1px); box-shadow: 0 4px 12px -6px rgba(79,142,247,.55); }
+
+/* Bars that grow in on mount */
+.ui-grow { animation: growW .8s cubic-bezier(.22, 1, .36, 1) both; }
+
+/* Light sweep overlay for progress / funnel bars */
+.ui-shine { position: absolute; inset: 0; overflow: hidden; border-radius: inherit; pointer-events: none; }
+.ui-shine::after {
+  content: ''; position: absolute; top: 0; bottom: 0; width: 45%;
+  background: linear-gradient(105deg, transparent, rgba(255,255,255,.22), transparent);
+  animation: shineSweep 3s ease-in-out infinite;
+}
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }

@@ -2,7 +2,7 @@
 // components/tabs/TabOrders.tsx
 import { useState, useMemo } from 'react'
 import type { DashboardData, OrderRow } from '@/lib/sheets'
-import { Card, CardTitle, Space } from '../ui'
+import { Card, CardTitle, KpiCard, Space } from '../ui'
 
 const STATUS_CONFIG: Record<string, { color: string; icon: string }> = {
   'Đang tuyển': { color: '#F5A623', icon: '🔥' },
@@ -107,18 +107,7 @@ export default function TabOrders({ data }: { data: DashboardData }) {
           { label: 'Đã offer',          value: tongDaOffer,     icon: '📩', color: '#F5A623', sub: `${tongCanTuyen > 0 ? Math.round(tongDaOffer/tongCanTuyen*100) : 0}% chỉ tiêu` },
           { label: 'Đã nhận việc',      value: tongDaNhanViec,  icon: '✅', color: '#2ECC8A', sub: `còn lại ${tongConLai}` },
         ].map(k => (
-          <div key={k.label} style={{
-            background: 'var(--bg3)', borderRadius: 12, padding: '16px 18px',
-            border: `1px solid ${k.color}33`, position: 'relative', overflow: 'hidden',
-          }}>
-            <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 2, background: `linear-gradient(90deg,${k.color},transparent)` }} />
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 8 }}>
-              <div style={{ fontSize: 10, color: 'var(--text2)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '.6px' }}>{k.label}</div>
-              <div style={{ fontSize: 18 }}>{k.icon}</div>
-            </div>
-            <div style={{ fontFamily: 'Space Mono,monospace', fontSize: 28, fontWeight: 700, color: k.color }}>{k.value}</div>
-            <div style={{ fontSize: 10, color: 'var(--text3)', marginTop: 4 }}>{k.sub}</div>
-          </div>
+          <KpiCard key={k.label} label={k.label} value={k.value} sub={k.sub} color={k.color} icon={k.icon} />
         ))}
       </div>
 
@@ -129,11 +118,13 @@ export default function TabOrders({ data }: { data: DashboardData }) {
           { label: 'Hoàn thành', count: hoanThanh,  color: '#2ECC8A', icon: '✅' },
           { label: 'Tạm dừng',   count: tamDung,    color: '#F75454', icon: '⏸️' },
         ].map(s => (
-          <div key={s.label} style={{
-            background: 'var(--bg3)', borderRadius: 10, padding: '12px 16px',
-            border: `1px solid ${s.color}33`,
+          <div key={s.label} className="ui-kpi" style={{
+            ['--kpi-c' as string]: s.color,
+            background: `linear-gradient(140deg, ${s.color}12, transparent 55%), var(--bg3)`,
+            borderRadius: 12, padding: '12px 16px',
+            border: `1px solid ${s.color}33`, boxShadow: 'var(--shadow-sm)',
             display: 'flex', alignItems: 'center', gap: 12,
-          }}>
+          } as React.CSSProperties}>
             <div style={{ fontSize: 24 }}>{s.icon}</div>
             <div>
               <div style={{ fontFamily: 'Space Mono,monospace', fontSize: 22, fontWeight: 700, color: s.color }}>{s.count}</div>
@@ -161,17 +152,18 @@ export default function TabOrders({ data }: { data: DashboardData }) {
           placeholder="🔍 Tìm vị trí, team, người đề xuất..."
           value={search}
           onChange={e => setSearch(e.target.value)}
+          className="ui-input"
           style={{ ...inputStyle, flex: 1, minWidth: 200 }}
         />
-        <select value={filterMonth} onChange={e => setFilterMonth(e.target.value)} style={inputStyle}>
+        <select value={filterMonth} onChange={e => setFilterMonth(e.target.value)} className="ui-input" style={inputStyle}>
           <option value="all">📅 Tất cả tháng</option>
           {months.map(m => <option key={m} value={String(m)}>Tháng {m}</option>)}
         </select>
-        <select value={filterStatus} onChange={e => setFilterStatus(e.target.value)} style={inputStyle}>
+        <select value={filterStatus} onChange={e => setFilterStatus(e.target.value)} className="ui-input" style={inputStyle}>
           <option value="all">🏷️ Tất cả trạng thái</option>
           {statuses.map(s => <option key={s} value={s}>{s}</option>)}
         </select>
-        <select value={filterTeam} onChange={e => setFilterTeam(e.target.value)} style={inputStyle}>
+        <select value={filterTeam} onChange={e => setFilterTeam(e.target.value)} className="ui-input" style={inputStyle}>
           <option value="all">👥 Tất cả team</option>
           {teams.map(t => <option key={t} value={t}>{t}</option>)}
         </select>

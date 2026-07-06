@@ -63,18 +63,18 @@ export default function TabRaw({ data }: { data: DashboardData }) {
         <input
           placeholder="🔍 Tìm tên UV, vị trí, NV tuyển..."
           value={search}
-          onChange={e => { setSearch(e.target.value); setPage(1) }}
+          onChange={e => { setSearch(e.target.value); setPage(1) }} className="ui-input"
           style={{ ...inputStyle, flex:1, minWidth:200 }}
         />
-        <select value={filterLevel} onChange={e => { setFilterLevel(e.target.value); setPage(1) }} style={selectStyle}>
+        <select value={filterLevel} onChange={e => { setFilterLevel(e.target.value); setPage(1) }} className="ui-input" style={selectStyle}>
           <option value="">Tất cả Level</option>
           {levels.map(l => <option key={l} value={l}>{l}</option>)}
         </select>
-        <select value={filterNguon} onChange={e => { setFilterNguon(e.target.value); setPage(1) }} style={selectStyle}>
+        <select value={filterNguon} onChange={e => { setFilterNguon(e.target.value); setPage(1) }} className="ui-input" style={selectStyle}>
           <option value="">Tất cả Nguồn</option>
           {nguons.map(n => <option key={n} value={n}>{n}</option>)}
         </select>
-        <select value={filterMonth} onChange={e => { setFilterMonth(e.target.value); setPage(1) }} style={selectStyle}>
+        <select value={filterMonth} onChange={e => { setFilterMonth(e.target.value); setPage(1) }} className="ui-input" style={selectStyle}>
           <option value="">Tất cả Tháng</option>
           {[1,2,3,4,5,6,7,8,9,10,11,12].map(m => <option key={m} value={m}>Tháng {m}</option>)}
         </select>

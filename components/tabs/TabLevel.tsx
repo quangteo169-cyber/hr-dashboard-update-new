@@ -37,7 +37,7 @@ export default function TabLevel({ data }: { data: DashboardData }) {
         <div style={{ overflowX:'auto' }}>
           <table style={{ width:'100%', borderCollapse:'collapse', fontSize:11 }}>
             <thead>
-              <tr style={{ borderBottom:'1px solid #30363D' }}>
+              <tr style={{ borderBottom:'1px solid var(--border2)' }}>
                 {['Level','Tên Level','Số UV','% / Tổng CV','% / Level Trước','Thanh tiến trình','Trạng thái'].map((h,i) => (
                   <th key={h} style={{
                     padding:'8px 12px', textAlign:i===0?'center':'left',
@@ -131,7 +131,7 @@ export default function TabLevel({ data }: { data: DashboardData }) {
               <YAxis dataKey="name" type="category" tick={{ fill:'var(--text2)', fontSize:10, fontFamily:'Space Mono,monospace' }}
                 axisLine={false} tickLine={false} width={45} />
               <Tooltip
-                contentStyle={{ background:'var(--bg4)', border:'1px solid #30363D', borderRadius:8, fontSize:11 }}
+                contentStyle={{ background:'var(--bg4)', border:'1px solid var(--border2)', borderRadius:8, fontSize:11 }}
                 cursor={{ fill:'rgba(255,255,255,0.04)' }}
               />
               <Bar dataKey="value" radius={[0,4,4,0]} name="Số UV">
@@ -193,7 +193,7 @@ export default function TabLevel({ data }: { data: DashboardData }) {
         <div style={{ overflowX:'auto' }}>
           <table style={{ width:'100%', borderCollapse:'collapse', fontSize:11 }}>
             <thead>
-              <tr style={{ borderBottom:'1px solid #30363D' }}>
+              <tr style={{ borderBottom:'1px solid var(--border2)' }}>
                 <th style={{ padding:'8px 12px', textAlign:'left', color:'var(--text3)', fontSize:9,
                   fontWeight:700, textTransform:'uppercase' }}>Level</th>
                 {data.byMonth.map(m => (
@@ -238,7 +238,7 @@ export default function TabLevel({ data }: { data: DashboardData }) {
                 )
               })}
               {/* Tổng hàng */}
-              <tr style={{ background:'#1B2A4A', borderTop:'1px solid #30363D' }}>
+              <tr style={{ background:'color-mix(in srgb, var(--blue) 14%, var(--bg2))', borderTop:'1px solid var(--border2)' }}>
                 <td style={{ padding:'10px 12px', fontWeight:700, color:'var(--text)' }}>
                   TỔNG
                 </td>

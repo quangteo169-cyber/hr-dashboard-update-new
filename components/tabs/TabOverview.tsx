@@ -65,17 +65,19 @@ export default function TabOverview({ data }: { data: DashboardData }) {
     <div>
       {/* BỘ LỌC THÁNG */}
       <div style={{ display:'flex', alignItems:'center', gap:8, marginBottom:16, flexWrap:'wrap' }}>
-        <span style={{ fontSize:11, color:'#8B949E', marginRight:4 }}>📅 Xem theo:</span>
+        <span style={{ fontSize:11, color:'var(--text2)', marginRight:4 }}>📅 Xem theo:</span>
         {[null, 1,2,3,4,5,6,7,8,9,10,11,12].map(m => (
           <button
             key={m ?? 'all'}
+            className="chip"
             onClick={() => setSelectedMonth(m)}
             style={{
-              padding:'5px 12px', borderRadius:20, border:'1px solid',
-              fontSize:11, fontWeight:600, cursor:'pointer', transition:'all .15s',
-              borderColor: selectedMonth===m ? '#4F8EF7' : '#30363D',
-              background: selectedMonth===m ? 'rgba(79,142,247,0.15)' : 'transparent',
-              color: selectedMonth===m ? '#4F8EF7' : '#8B949E',
+              padding:'5px 13px', borderRadius:999, border:'1px solid',
+              fontSize:11, fontWeight:600, cursor:'pointer', fontFamily:'inherit',
+              borderColor: selectedMonth===m ? 'transparent' : 'var(--border2)',
+              background: selectedMonth===m ? 'linear-gradient(135deg,#4F8EF7,#9B6FF7)' : 'transparent',
+              color: selectedMonth===m ? '#fff' : 'var(--text2)',
+              boxShadow: selectedMonth===m ? '0 5px 14px -6px rgba(99,125,247,.8)' : 'none',
             }}
           >
             {m === null ? 'Cả năm' : `T${m}`}
@@ -83,8 +85,8 @@ export default function TabOverview({ data }: { data: DashboardData }) {
         ))}
       </div>
 
-      <div style={{ marginBottom:12, fontSize:12, color:'#8B949E' }}>
-        Đang xem: <b style={{ color:'#E6EDF3' }}>{monthLabel}</b>
+      <div style={{ marginBottom:12, fontSize:12, color:'var(--text2)' }}>
+        Đang xem: <b style={{ color:'var(--text)' }}>{monthLabel}</b>
         {selectedMonth !== null && (
           <span style={{ color:'#4F8EF7', marginLeft:8 }}>
             — {s.total} CV
@@ -126,8 +128,8 @@ export default function TabOverview({ data }: { data: DashboardData }) {
           <CardTitle sub="So sánh CV / Pass HR / Nhận việc theo tháng">📅 Xu Hướng Theo Tháng</CardTitle>
           <ResponsiveContainer width="100%" height={220}>
             <BarChart data={monthChart} barGap={4}>
-              <XAxis dataKey="name" tick={{ fill:'#8B949E', fontSize:11 }} axisLine={false} tickLine={false} />
-              <YAxis tick={{ fill:'#8B949E', fontSize:10 }} axisLine={false} tickLine={false} />
+              <XAxis dataKey="name" tick={{ fill:'var(--text2)', fontSize:11 }} axisLine={false} tickLine={false} />
+              <YAxis tick={{ fill:'var(--text2)', fontSize:10 }} axisLine={false} tickLine={false} />
               <Tooltip
                 contentStyle={{ background:'var(--bg4)', border:'1px solid var(--border)', borderRadius:8, fontSize:11 }}
                 labelStyle={{ color:'var(--text)', fontWeight:600 }}
@@ -153,7 +155,7 @@ export default function TabOverview({ data }: { data: DashboardData }) {
             ].map(r => (
               <div key={r.label} style={{ display:'flex', justifyContent:'space-between', alignItems:'center',
                 padding:'5px 8px', background:'var(--bg4)', borderRadius:6 }}>
-                <span style={{ fontSize:10, color:'#8B949E' }}>{r.label}</span>
+                <span style={{ fontSize:10, color:'var(--text2)' }}>{r.label}</span>
                 <span style={{ fontFamily:'Space Mono,monospace', fontSize:12,
                   fontWeight:700, color:r.color }}>{r.pct}</span>
               </div>
@@ -170,7 +172,7 @@ export default function TabOverview({ data }: { data: DashboardData }) {
           <CardTitle sub="Top nguồn CV theo số lượng">📡 Nguồn CV</CardTitle>
           {data.bySource.slice(0,6).map((src, i) => (
             <div key={src.nguon} style={{ display:'flex', alignItems:'center', gap:10, marginBottom:8 }}>
-              <div style={{ fontSize:11, color:'#6E7681', width:18, textAlign:'right' }}>#{i+1}</div>
+              <div style={{ fontSize:11, color:'var(--text3)', width:18, textAlign:'right' }}>#{i+1}</div>
               <div style={{ flex:1, fontSize:11, color:'var(--text)', fontWeight:500 }}>{src.nguon}</div>
               <div style={{ width:80, height:4, background:'var(--bg4)', borderRadius:2, overflow:'hidden' }}>
                 <div style={{ height:'100%', width:`${data.bySource[0]?.total>0?src.total/data.bySource[0].total*100:0}%`, background:'#4F8EF7', borderRadius:2 }} />
@@ -191,17 +193,17 @@ export default function TabOverview({ data }: { data: DashboardData }) {
               <div style={{ display:'flex', justifyContent:'space-between', marginBottom:8 }}>
                 <div>
                   <div style={{ fontSize:13, fontWeight:600, color:['#9B6FF7','#F5A623'][i]||'#4F8EF7' }}>{n.nvTD}</div>
-                  <div style={{ fontSize:9, color:'#6E7681', marginTop:2 }}>Chuyên viên tuyển dụng</div>
+                  <div style={{ fontSize:9, color:'var(--text3)', marginTop:2 }}>Chuyên viên tuyển dụng</div>
                 </div>
                 <div style={{ textAlign:'right' }}>
                   <div style={{ fontFamily:'Space Mono,monospace', fontSize:20, fontWeight:700, color:['#9B6FF7','#F5A623'][i]||'#4F8EF7' }}>{n.total}</div>
-                  <div style={{ fontSize:9, color:'#6E7681' }}>CV phụ trách</div>
+                  <div style={{ fontSize:9, color:'var(--text3)' }}>CV phụ trách</div>
                 </div>
               </div>
               <div style={{ height:3, background:'var(--border)', borderRadius:2 }}>
                 <div style={{ height:'100%', width:`${data.stats.total>0?n.total/data.stats.total*100:0}%`, background:['#9B6FF7','#F5A623'][i]||'#4F8EF7', borderRadius:2 }} />
               </div>
-              <div style={{ display:'flex', gap:12, marginTop:8, fontSize:10, color:'#6E7681' }}>
+              <div style={{ display:'flex', gap:12, marginTop:8, fontSize:10, color:'var(--text3)' }}>
                 <span>Pass HR: <b style={{ color:'#2ECC8A' }}>{n.hrPass}</b></span>
                 <span>Nhận việc: <b style={{ color:'#FFD700' }}>{n.nhanViec}</b></span>
                 <span>Tỷ lệ: <b style={{ color:'#1ACFCF' }}>{p(n.nhanViec,n.total)}</b></span>

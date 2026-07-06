@@ -85,18 +85,18 @@ export default function TabPosition({ data }: { data: DashboardData }) {
 
       {/* FILTERS */}
       <div style={{ display: 'flex', gap: 10, marginBottom: 14, flexWrap: 'wrap', alignItems: 'center' }}>
-        <select value={filterPos} onChange={e => setFilterPos(e.target.value)} style={{ ...inputStyle, minWidth: 220, maxWidth: 320 }}>
+        <select value={filterPos} onChange={e => setFilterPos(e.target.value)} className="ui-input" style={{ ...inputStyle, minWidth: 220, maxWidth: 320 }}>
           <option value="all">💼 Tất cả vị trí</option>
           {allPositions.map(v => <option key={v} value={v}>{v}</option>)}
         </select>
 
         <label style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 11, color: 'var(--text2)' }}>
           📅 Từ
-          <input type="date" value={fromDate} onChange={e => setFromDate(e.target.value)} style={inputStyle} />
+          <input type="date" value={fromDate} onChange={e => setFromDate(e.target.value)} className="ui-input" style={inputStyle} />
         </label>
         <label style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 11, color: 'var(--text2)' }}>
           đến
-          <input type="date" value={toDate} onChange={e => setToDate(e.target.value)} style={inputStyle} />
+          <input type="date" value={toDate} onChange={e => setToDate(e.target.value)} className="ui-input" style={inputStyle} />
         </label>
 
         {hasFilter && (
@@ -117,7 +117,7 @@ export default function TabPosition({ data }: { data: DashboardData }) {
       <div style={{ overflowX:'auto' }}>
         <table style={{ width:'100%', borderCollapse:'collapse', fontSize:11 }}>
           <thead>
-            <tr style={{ borderBottom:'1px solid #30363D' }}>
+            <tr style={{ borderBottom:'1px solid var(--border2)' }}>
               {['#','Vị trí','Tổng CV','% Tổng','HR Pass','Tham gia PV','Nhận việc','Tỷ lệ NV','Bar'].map((h,i) => (
                 <th key={h} style={{ padding:'8px 10px', textAlign:i<=1?'left':'center',
                   color:'var(--text3)', fontSize:9, fontWeight:700, textTransform:'uppercase', letterSpacing:'0.6px' }}>{h}</th>
