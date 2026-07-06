@@ -102,14 +102,14 @@ export default function TabPosition({ data }: { data: DashboardData }) {
         {hasFilter && (
           <button
             onClick={() => { setFilterPos('all'); setFromDate(''); setToDate('') }}
-            style={{ ...inputStyle, color: '#F75454', border: '1px solid #F7545444' }}
+            style={{ ...inputStyle, color: '#FF4D6D', border: '1px solid #FF4D6D44' }}
           >
             ✕ Xoá lọc
           </button>
         )}
 
         <div style={{ fontSize: 11, color: 'var(--text2)', whiteSpace: 'nowrap', marginLeft: 'auto' }}>
-          <b style={{ color: 'var(--text)' }}>{rows.length}</b> vị trí • <b style={{ color: '#4F8EF7' }}>{tongCV}</b> CV
+          <b style={{ color: 'var(--text)' }}>{rows.length}</b> vị trí • <b style={{ color: '#33A6FF' }}>{tongCV}</b> CV
           {(fromDate || toDate) && <span style={{ color: 'var(--text3)' }}> trong khoảng</span>}
         </div>
       </div>
@@ -134,27 +134,27 @@ export default function TabPosition({ data }: { data: DashboardData }) {
             ) : rows.map((pos, i) => (
               <tr key={pos.viTri} style={{ background:i%2===0?'var(--bg3)':'var(--bg4)' }}>
                 <td style={{ padding:'9px 10px',
-                  color:i<3?['#FFD700','#C0C0C0','#CD7F32'][i]:'var(--text3)', fontWeight:600 }}>{i+1}</td>
+                  color:i<3?['#FFD84D','#C0C0C0','#CD7F32'][i]:'var(--text3)', fontWeight:600 }}>{i+1}</td>
                 <td style={{ padding:'9px 10px', color:'var(--text)', fontWeight:500, maxWidth:280,
                   overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap' }} title={pos.viTri}>
                   {pos.viTri}
                 </td>
                 <td style={{ padding:'9px 10px', textAlign:'center', fontFamily:'Space Mono,monospace',
-                  fontSize:13, fontWeight:700, color:'#4F8EF7' }}>{pos.total}</td>
+                  fontSize:13, fontWeight:700, color:'#33A6FF' }}>{pos.total}</td>
                 <td style={{ padding:'9px 10px', textAlign:'center', color:'var(--text2)' }}>
                   {p(pos.total, rangeTotal)}
                 </td>
-                <td style={{ padding:'9px 10px', textAlign:'center', color:'#2ECC8A' }}>{pos.hrPass}</td>
-                <td style={{ padding:'9px 10px', textAlign:'center', color:'#9B6FF7' }}>{pos.thamGiaPV}</td>
+                <td style={{ padding:'9px 10px', textAlign:'center', color:'#00E08F' }}>{pos.hrPass}</td>
+                <td style={{ padding:'9px 10px', textAlign:'center', color:'#B44CFF' }}>{pos.thamGiaPV}</td>
                 <td style={{ padding:'9px 10px', textAlign:'center',
                   fontFamily:'Space Mono,monospace', fontWeight:700,
-                  color:pos.nhanViec>0?'#FFD700':'var(--border)' }}>{pos.nhanViec||'—'}</td>
+                  color:pos.nhanViec>0?'#FFD84D':'var(--border)' }}>{pos.nhanViec||'—'}</td>
                 <td style={{ padding:'9px 10px', textAlign:'center',
-                  color:pos.nhanViec>2?'#2ECC8A':pos.nhanViec>0?'#F5A623':'var(--text3)' }}>
+                  color:pos.nhanViec>2?'#00E08F':pos.nhanViec>0?'#FFAA2B':'var(--text3)' }}>
                   {p(pos.nhanViec, pos.total)}
                 </td>
                 <td style={{ padding:'9px 10px', minWidth:100 }}>
-                  <PctBar value={pos.total} max={maxCV} color="#4F8EF7" />
+                  <PctBar value={pos.total} max={maxCV} color="#33A6FF" />
                 </td>
               </tr>
             ))}

@@ -16,7 +16,7 @@ export function CardTitle({ children, sub }: { children: React.ReactNode; sub?: 
     <div style={{ marginBottom: sub ? 4 : 14 }}>
       <div style={{ display:'flex', alignItems:'center', gap:8 }}>
         <span style={{ width:4, height:15, borderRadius:2, background:'var(--accent-grad)', flexShrink:0 }} />
-        <span style={{ fontFamily:'Space Grotesk,Be Vietnam Pro,sans-serif', fontSize:14, fontWeight:700, letterSpacing:'-.01em', color:'var(--text)' }}>{children}</span>
+        <span style={{ fontFamily:'Chakra Petch,Be Vietnam Pro,sans-serif', fontSize:14, fontWeight:700, letterSpacing:'.01em', color:'var(--text)' }}>{children}</span>
       </div>
       {sub && <div style={{ fontSize:11, color:'var(--text3)', marginTop:3, marginBottom:12, paddingLeft:12 }}>{sub}</div>}
     </div>
@@ -30,13 +30,14 @@ export function KpiCard({
   label: string; value: string | number; sub?: string
   color?: string; pct?: number; icon?: string
 }) {
-  const c = color || '#4F8EF7'
+  const c = color || '#33A6FF'
   return (
     <div className="ui-kpi" style={{
       ['--kpi-c' as string]: c,
       background:`linear-gradient(140deg, ${c}16, transparent 52%), var(--bg3)`,
       border:`1px solid ${c}3a`, boxShadow:'var(--shadow-sm)',
-      borderRadius:14, padding:'16px 18px', position:'relative', overflow:'hidden'
+      borderRadius:10, padding:'16px 18px', position:'relative', overflow:'hidden',
+      clipPath:'polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 0 100%)',
     } as React.CSSProperties}>
       <div style={{ position:'absolute', top:0, left:0, right:0, height:3,
         background:`linear-gradient(90deg,${c},${c}55 60%,transparent)` }} />
@@ -57,9 +58,9 @@ export function KpiCard({
           </div>
         )}
       </div>
-      <div style={{ fontFamily:'Space Grotesk,Be Vietnam Pro,sans-serif', fontSize:32,
-        fontWeight:700, letterSpacing:'-0.02em', color:c, lineHeight:1, marginBottom:6,
-        textShadow:`0 0 26px ${c}50` }}>
+      <div style={{ fontFamily:'Chakra Petch,Be Vietnam Pro,sans-serif', fontSize:32,
+        fontWeight:700, letterSpacing:'-0.01em', color:c, lineHeight:1, marginBottom:6,
+        textShadow:`0 0 26px ${c}60` }}>
         {value}
       </div>
       {sub && <div style={{ fontSize:10, color:'var(--text3)' }}>{sub}</div>}
@@ -94,11 +95,12 @@ export function Grid({ cols, gap, children }: {
 export function SectionHeader({ children }: { children: React.ReactNode }) {
   return (
     <div style={{
-      background:'linear-gradient(90deg, color-mix(in srgb, #4F8EF7 13%, var(--bg2)), var(--bg2) 70%)',
-      border:'1px solid var(--border)', borderLeft:'3px solid #4F8EF7',
+      background:'linear-gradient(90deg, color-mix(in srgb, #00C8FF 13%, var(--bg2)), var(--bg2) 70%)',
+      border:'1px solid var(--border)', borderLeft:'3px solid #00C8FF',
       borderRadius:10, padding:'11px 16px',
-      fontSize:12.5, fontWeight:600, color:'var(--text)',
-      marginBottom:14, boxShadow:'var(--shadow-sm)',
+      fontFamily:'Chakra Petch,Be Vietnam Pro,sans-serif',
+      fontSize:12.5, fontWeight:600, color:'var(--text)', letterSpacing:'.02em',
+      marginBottom:14, boxShadow:'var(--shadow-sm), inset 3px 0 8px -4px rgba(0,200,255,.5)',
     }}>
       {children}
     </div>
@@ -108,7 +110,7 @@ export function SectionHeader({ children }: { children: React.ReactNode }) {
 /* ── PCT BAR ──────────────────────────────────────────────── */
 export function PctBar({ value, max, color }: { value: number; max: number; color?: string }) {
   const w = max > 0 ? Math.round(value / max * 100) : 0
-  const c = color || '#4F8EF7'
+  const c = color || '#33A6FF'
   return (
     <div style={{ height:5, background:'var(--bg4)', borderRadius:3, overflow:'hidden', minWidth:60 }}>
       <div className="ui-grow" style={{ height:'100%', width:`${w}%`,

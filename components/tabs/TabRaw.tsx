@@ -5,9 +5,9 @@ import type { DashboardData } from '@/lib/sheets'
 import { Card, Badge } from '../ui'
 
 const LEVEL_COLORS: Record<string, string> = {
-  L0:'#6B7280', L1:'#4F8EF7', L3:'#F5A623', L3X:'#F75454',
-  L3A:'#9B6FF7', L4A:'#1ACFCF', L4B:'#F75454',
-  L7:'#F5A623', L8:'#2ECC8A', L9:'#FFD700',
+  L0:'#6B7280', L1:'#33A6FF', L3:'#FFAA2B', L3X:'#FF4D6D',
+  L3A:'#B44CFF', L4A:'#00E5D0', L4B:'#FF4D6D',
+  L7:'#FFAA2B', L8:'#00E08F', L9:'#FFD84D',
 }
 
 export default function TabRaw({ data }: { data: DashboardData }) {
@@ -106,7 +106,7 @@ export default function TabRaw({ data }: { data: DashboardData }) {
                 }}>
                   <td style={{ padding:'7px 10px', textAlign:'center', color:'var(--text3)', fontSize:9 }}>{c.stt}</td>
                   <td style={{ padding:'7px 10px', color:'var(--text2)', whiteSpace:'nowrap', fontFamily:'Space Mono,monospace', fontSize:10 }}>{c.ngay}</td>
-                  <td style={{ padding:'7px 10px', color:'#9B6FF7', fontWeight:500 }}>{c.nvTD}</td>
+                  <td style={{ padding:'7px 10px', color:'#B44CFF', fontWeight:500 }}>{c.nvTD}</td>
                   <td style={{ padding:'7px 10px', color:'var(--text2)' }}>{c.nguon}</td>
                   <td style={{ padding:'7px 10px', color:'var(--text2)' }}>{c.capBac}</td>
                   <td style={{ padding:'7px 10px', color:'var(--text)', maxWidth:180, overflow:'hidden',
@@ -117,16 +117,16 @@ export default function TabRaw({ data }: { data: DashboardData }) {
                   <td style={{ padding:'7px 10px', textAlign:'center' }}>
                     {c.hrLocCV && <span style={{
                       fontSize:9, fontWeight:700, padding:'2px 6px', borderRadius:3,
-                      background:c.hrLocCV==='Pass'?'rgba(46,204,138,.2)':'rgba(247,84,84,.2)',
-                      color:c.hrLocCV==='Pass'?'#2ECC8A':'#F75454'
+                      background:c.hrLocCV==='Pass'?'rgba(0,224,143,.2)':'rgba(255,77,109,.2)',
+                      color:c.hrLocCV==='Pass'?'#00E08F':'#FF4D6D'
                     }}>{c.hrLocCV}</span>}
                   </td>
                   {/* L3 — cột Q */}
                   <td style={{ padding:'7px 10px', whiteSpace:'nowrap',
-                    color:c.ketQuaGoiMoi==='Đồng ý'?'#F5A623':c.ketQuaGoiMoi==='Từ chối'?'#F75454':'var(--text2)',
+                    color:c.ketQuaGoiMoi==='Đồng ý'?'#FFAA2B':c.ketQuaGoiMoi==='Từ chối'?'#FF4D6D':'var(--text2)',
                     fontSize:10 }}>{c.ketQuaGoiMoi}</td>
                   {/* L3A — cột U */}
-                  <td style={{ padding:'7px 10px', textAlign:'center', color:c.thamGiaPV==='Có'?'#9B6FF7':'var(--border2)' }}>
+                  <td style={{ padding:'7px 10px', textAlign:'center', color:c.thamGiaPV==='Có'?'#B44CFF':'var(--border2)' }}>
                     {c.thamGiaPV==='Có' ? '✓' : ''}
                   </td>
                   {/* Ngày PV — cột T */}
@@ -135,22 +135,22 @@ export default function TabRaw({ data }: { data: DashboardData }) {
                   <td style={{ padding:'7px 10px', textAlign:'center' }}>
                     {c.ketQuaPV && <span style={{
                       fontSize:9, fontWeight:700, padding:'2px 6px', borderRadius:3,
-                      background:c.ketQuaPV==='Pass'?'rgba(26,207,207,.2)':'rgba(247,84,84,.2)',
-                      color:c.ketQuaPV==='Pass'?'#1ACFCF':'#F75454'
+                      background:c.ketQuaPV==='Pass'?'rgba(0,229,208,.2)':'rgba(255,77,109,.2)',
+                      color:c.ketQuaPV==='Pass'?'#00E5D0':'#FF4D6D'
                     }}>{c.ketQuaPV}</span>}
                   </td>
                   {/* L7 — cột X */}
-                  <td style={{ padding:'7px 10px', textAlign:'center', color:c.dongYDiLam==='Có'?'#F5A623':'var(--border2)' }}>
+                  <td style={{ padding:'7px 10px', textAlign:'center', color:c.dongYDiLam==='Có'?'#FFAA2B':'var(--border2)' }}>
                     {c.dongYDiLam==='Có' ? '✓' : ''}
                   </td>
                   {/* L8 — cột Z */}
-                  <td style={{ padding:'7px 10px', textAlign:'center', color:c.uvNhanViec==='Có'?'#2ECC8A':'var(--border2)' }}>
+                  <td style={{ padding:'7px 10px', textAlign:'center', color:c.uvNhanViec==='Có'?'#00E08F':'var(--border2)' }}>
                     {c.uvNhanViec==='Có' ? '✓' : ''}
                   </td>
                   {/* Ngày hẹn đi làm — cột Y */}
                   <td style={{ padding:'7px 10px', color:'var(--text3)', fontSize:9, whiteSpace:'nowrap' }}>{c.ngayHenLamViec}</td>
                   {/* L9 — cột AA */}
-                  <td style={{ padding:'7px 10px', textAlign:'center', color:c.uvDiLam10Ngay==='Có'?'#FFD700':'var(--border2)' }}>
+                  <td style={{ padding:'7px 10px', textAlign:'center', color:c.uvDiLam10Ngay==='Có'?'#FFD84D':'var(--border2)' }}>
                     {c.uvDiLam10Ngay==='Có' ? '⭐' : ''}
                   </td>
                   {/* Ngày đủ 10 ngày — cột AB */}

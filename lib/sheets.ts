@@ -403,13 +403,13 @@ export async function fetchDashboardData(): Promise<DashboardData> {
 
   const levelDefs = [
     { level:'L0',  label:'CV thu thập được (cột B)',              color:'#6B7280', bg:'rgba(107,114,128,0.15)' },
-    { level:'L1',  label:'CV Pass lọc HR (cột P = Pass)',         color:'#4F8EF7', bg:'rgba(79,142,247,0.15)'  },
-    { level:'L3',  label:'UV có lịch hẹn PV (cột Q = Đồng ý)',   color:'#F5A623', bg:'rgba(245,166,35,0.15)'  },
-    { level:'L3A', label:'UV tới phỏng vấn (cột U = Có)',         color:'#9B6FF7', bg:'rgba(155,111,247,0.15)' },
-    { level:'L4A', label:'UV Pass PV V1 (cột V = Pass)',          color:'#1ACFCF', bg:'rgba(26,207,207,0.15)'  },
-    { level:'L7',  label:'UV có lịch hẹn đi làm (cột X = Có)',   color:'#F5A623', bg:'rgba(245,166,35,0.13)'  },
-    { level:'L8',  label:'UV đi làm ngày đầu (cột Z = Có)',       color:'#2ECC8A', bg:'rgba(46,204,138,0.15)'  },
-    { level:'L9',  label:'UV đi làm đủ 10 ngày (cột AA = Có) ✨', color:'#FFD700', bg:'rgba(255,215,0,0.15)'  },
+    { level:'L1',  label:'CV Pass lọc HR (cột P = Pass)',         color:'#33A6FF', bg:'rgba(51,166,255,0.15)'  },
+    { level:'L3',  label:'UV có lịch hẹn PV (cột Q = Đồng ý)',   color:'#FFAA2B', bg:'rgba(255,170,43,0.15)'  },
+    { level:'L3A', label:'UV tới phỏng vấn (cột U = Có)',         color:'#B44CFF', bg:'rgba(180,76,255,0.15)' },
+    { level:'L4A', label:'UV Pass PV V1 (cột V = Pass)',          color:'#00E5D0', bg:'rgba(0,229,208,0.15)'  },
+    { level:'L7',  label:'UV có lịch hẹn đi làm (cột X = Có)',   color:'#FFAA2B', bg:'rgba(255,170,43,0.13)'  },
+    { level:'L8',  label:'UV đi làm ngày đầu (cột Z = Có)',       color:'#00E08F', bg:'rgba(0,224,143,0.15)'  },
+    { level:'L9',  label:'UV đi làm đủ 10 ngày (cột AA = Có) ✨', color:'#FFD84D', bg:'rgba(255,216,77,0.15)'  },
   ]
   const prevStage = [total, total, hrPass, dongYPV, thamGiaPV, passPV, dongYLam, nhanViec]
   const levelStats: LevelStat[] = levelDefs.map((def, i) => {

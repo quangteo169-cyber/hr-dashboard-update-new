@@ -101,11 +101,11 @@ export default function TabPersonnel({ data }: { data: DashboardData }) {
 
       {/* KPI */}
       <Grid cols={5} gap={12}>
-        <KpiCard label="Tổng nhân sự" value={p.total} sub="đang làm việc" color="#4F8EF7" icon="👥" />
-        <KpiCard label="Full time" value={p.fullTime} sub={pct(p.fullTime, p.fullTime + p.partTime) + ' tổng FT+PT'} color="#2ECC8A" icon="⏱️" />
-        <KpiCard label="Part time" value={p.partTime} sub={pct(p.partTime, p.fullTime + p.partTime) + ' tổng FT+PT'} color="#1ACFCF" icon="⏳" />
-        <KpiCard label={`Nhận việc ${mLabel}`} value={p.hiresThisMonth} sub="trong tháng" color="#F5A623" icon="📥" />
-        <KpiCard label={`Đã nghỉ ${mLabel}`} value={p.leavesThisMonth} sub="trong tháng" color="#F75454" icon="📤" />
+        <KpiCard label="Tổng nhân sự" value={p.total} sub="đang làm việc" color="#33A6FF" icon="👥" />
+        <KpiCard label="Full time" value={p.fullTime} sub={pct(p.fullTime, p.fullTime + p.partTime) + ' tổng FT+PT'} color="#00E08F" icon="⏱️" />
+        <KpiCard label="Part time" value={p.partTime} sub={pct(p.partTime, p.fullTime + p.partTime) + ' tổng FT+PT'} color="#00E5D0" icon="⏳" />
+        <KpiCard label={`Nhận việc ${mLabel}`} value={p.hiresThisMonth} sub="trong tháng" color="#FFAA2B" icon="📥" />
+        <KpiCard label={`Đã nghỉ ${mLabel}`} value={p.leavesThisMonth} sub="trong tháng" color="#FF4D6D" icon="📤" />
       </Grid>
 
       <Space h={16} />
@@ -113,23 +113,23 @@ export default function TabPersonnel({ data }: { data: DashboardData }) {
       {/* Giới tính + Độ tuổi */}
       <Grid cols={2} gap={16}>
         <DonutBlock title="🧑‍🤝‍🧑 Cơ Cấu Giới Tính" sub="Tỷ lệ nam / nữ trên tổng nhân sự"
-          data={genderData} colors={['#4F8EF7', '#9B6FF7']} total={p.male + p.female} />
+          data={genderData} colors={['#33A6FF', '#B44CFF']} total={p.male + p.female} />
         <DonutBlock title="🎂 Cơ Cấu Độ Tuổi" sub="Phân bổ nhân sự theo nhóm tuổi"
-          data={p.byAge} colors={['#4F8EF7', '#F75454', '#FFD700']} total={p.total} />
+          data={p.byAge} colors={['#33A6FF', '#FF4D6D', '#FFD84D']} total={p.total} />
       </Grid>
 
       <Space h={16} />
 
       {/* Cấp bậc + Khối */}
       <Grid cols={2} gap={16}>
-        <BarBlock title="🏅 Nhân Sự Theo Cấp Bậc" sub="Số lượng theo từng cấp bậc" data={p.byLevel} color="#4F8EF7" />
-        <BarBlock title="🏢 Nhân Sự Theo Khối Chức Năng" sub="Số lượng theo khối" data={p.byDivision} color="#1ACFCF" />
+        <BarBlock title="🏅 Nhân Sự Theo Cấp Bậc" sub="Số lượng theo từng cấp bậc" data={p.byLevel} color="#33A6FF" />
+        <BarBlock title="🏢 Nhân Sự Theo Khối Chức Năng" sub="Số lượng theo khối" data={p.byDivision} color="#00E5D0" />
       </Grid>
 
       <Space h={16} />
 
       {/* Bộ phận */}
-      <BarBlock title="🗂️ Nhân Sự Theo Bộ Phận" sub="Số lượng theo từng bộ phận (ẩn bộ phận = 0)" data={p.byDepartment} color="#9B6FF7" />
+      <BarBlock title="🗂️ Nhân Sự Theo Bộ Phận" sub="Số lượng theo từng bộ phận (ẩn bộ phận = 0)" data={p.byDepartment} color="#B44CFF" />
 
       <Space h={16} />
 
@@ -145,9 +145,9 @@ export default function TabPersonnel({ data }: { data: DashboardData }) {
             <YAxis tick={{ fill: 'var(--text2)', fontSize: 10 }} axisLine={false} tickLine={false} />
             <Tooltip contentStyle={tooltipStyle} cursor={{ fill: 'rgba(255,255,255,0.04)' }} />
             <Legend wrapperStyle={{ fontSize: 11 }} />
-            <Bar dataKey="Nhận việc" fill="#2ECC8A" radius={[4, 4, 0, 0]} barSize={14} />
-            <Bar dataKey="Nghỉ việc" fill="#F75454" radius={[4, 4, 0, 0]} barSize={14} />
-            <Line type="monotone" dataKey="Tăng ròng" stroke="#F5A623" strokeWidth={2} dot={{ r: 3 }} />
+            <Bar dataKey="Nhận việc" fill="#00E08F" radius={[4, 4, 0, 0]} barSize={14} />
+            <Bar dataKey="Nghỉ việc" fill="#FF4D6D" radius={[4, 4, 0, 0]} barSize={14} />
+            <Line type="monotone" dataKey="Tăng ròng" stroke="#FFAA2B" strokeWidth={2} dot={{ r: 3 }} />
           </ComposedChart>
         </ResponsiveContainer>
       </Card>

@@ -8,17 +8,17 @@ const p = (n: number, d: number) => d > 0 ? `${(n/d*100).toFixed(1)}%` : '—'
 export default function TabFunnel({ data }: { data: DashboardData }) {
   const { stats: s } = data
   const stages = [
-    { lv:'L0',  name:'CV thu thập được',        cnt:s.total,      color:'#4F8EF7' },
-    { lv:'L1',  name:'CV pass lọc HR',           cnt:s.hrPass,     color:'#2ECC8A' },
-    { lv:'L1F', name:'CV fail lọc HR',           cnt:s.hrFail,     color:'#F75454' },
-    { lv:'L3', name:'UV đồng ý phỏng vấn',      cnt:s.dongYPV,    color:'#F5A623' },
-    { lv:'L3X', name:'UV từ chối phỏng vấn',     cnt:s.tuChoiPV,   color:'#F75454' },
-    { lv:'L4',  name:'UV tham gia PV V1',         cnt:s.thamGiaPV,  color:'#9B6FF7' },
-    { lv:'L4A', name:'UV pass PV V1',             cnt:s.passPV,     color:'#1ACFCF' },
-    { lv:'L4B', name:'UV fail PV V1',             cnt:s.failPV,     color:'#F75454' },
-    { lv:'L7',  name:'UV đồng ý nhận việc',       cnt:s.dongYLam,   color:'#F5A623' },
-    { lv:'L8',  name:'UV đi làm ngày đầu',        cnt:s.nhanViec,   color:'#2ECC8A' },
-    { lv:'L9',  name:'UV đi làm đủ 10 ngày ✨',  cnt:s.d10,        color:'#FFD700' },
+    { lv:'L0',  name:'CV thu thập được',        cnt:s.total,      color:'#33A6FF' },
+    { lv:'L1',  name:'CV pass lọc HR',           cnt:s.hrPass,     color:'#00E08F' },
+    { lv:'L1F', name:'CV fail lọc HR',           cnt:s.hrFail,     color:'#FF4D6D' },
+    { lv:'L3', name:'UV đồng ý phỏng vấn',      cnt:s.dongYPV,    color:'#FFAA2B' },
+    { lv:'L3X', name:'UV từ chối phỏng vấn',     cnt:s.tuChoiPV,   color:'#FF4D6D' },
+    { lv:'L4',  name:'UV tham gia PV V1',         cnt:s.thamGiaPV,  color:'#B44CFF' },
+    { lv:'L4A', name:'UV pass PV V1',             cnt:s.passPV,     color:'#00E5D0' },
+    { lv:'L4B', name:'UV fail PV V1',             cnt:s.failPV,     color:'#FF4D6D' },
+    { lv:'L7',  name:'UV đồng ý nhận việc',       cnt:s.dongYLam,   color:'#FFAA2B' },
+    { lv:'L8',  name:'UV đi làm ngày đầu',        cnt:s.nhanViec,   color:'#00E08F' },
+    { lv:'L9',  name:'UV đi làm đủ 10 ngày ✨',  cnt:s.d10,        color:'#FFD84D' },
   ]
   const monthRows = data.byMonth.map(m => [
     m.label, m.total, m.hrPass, p(m.hrPass,m.total),
@@ -59,20 +59,20 @@ export default function TabFunnel({ data }: { data: DashboardData }) {
                   display:'flex', alignItems:'center', gap:10
                 }}>
                   <div style={{ fontFamily:'Space Mono,monospace', fontSize:9,
-                    color:'#4F8EF7', width:60 }}>{r.step}</div>
+                    color:'#33A6FF', width:60 }}>{r.step}</div>
                   <div style={{ flex:1 }}>
                     <div style={{ fontSize:10, color:'var(--text)', marginBottom:4 }}>{r.label}</div>
                     <div style={{ height:4, background:'var(--border)', borderRadius:2, overflow:'hidden' }}>
                       <div style={{ height:'100%', width:`${passPct}%`,
-                        background: passPct>=70?'#2ECC8A':passPct>=40?'#F5A623':'#F75454', borderRadius:2 }} />
+                        background: passPct>=70?'#00E08F':passPct>=40?'#FFAA2B':'#FF4D6D', borderRadius:2 }} />
                     </div>
                   </div>
                   <div style={{ textAlign:'right', flexShrink:0 }}>
                     <div style={{ fontFamily:'Space Mono,monospace', fontSize:12, fontWeight:700,
-                      color:passPct>=70?'#2ECC8A':passPct>=40?'#F5A623':'#F75454' }}>
+                      color:passPct>=70?'#00E08F':passPct>=40?'#FFAA2B':'#FF4D6D' }}>
                       {passPct.toFixed(0)}%
                     </div>
-                    {r.drop > 0 && <div style={{ fontSize:9, color:'#F75454' }}>-{r.drop} UV</div>}
+                    {r.drop > 0 && <div style={{ fontSize:9, color:'#FF4D6D' }}>-{r.drop} UV</div>}
                   </div>
                 </div>
               )
@@ -87,7 +87,7 @@ export default function TabFunnel({ data }: { data: DashboardData }) {
         <Table
           headers={['Tháng','Tổng CV','HR Pass','Pass%','Tham gia PV','Pass PV','Nhận việc','10 ngày','CV→PV%','CV→NV%']}
           rows={monthRows}
-          colColors={[undefined,'#4F8EF7','#2ECC8A','#2ECC8A','#9B6FF7','#1ACFCF','#2ECC8A','#FFD700','#F5A623','#F5A623']}
+          colColors={[undefined,'#33A6FF','#00E08F','#00E08F','#B44CFF','#00E5D0','#00E08F','#FFD84D','#FFAA2B','#FFAA2B']}
         />
       </Card>
     </div>

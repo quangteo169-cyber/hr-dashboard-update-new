@@ -5,9 +5,9 @@ import type { DashboardData, OrderRow } from '@/lib/sheets'
 import { Card, CardTitle, KpiCard, Space } from '../ui'
 
 const STATUS_CONFIG: Record<string, { color: string; icon: string }> = {
-  'Đang tuyển': { color: '#F5A623', icon: '🔥' },
-  'Hoàn thành': { color: '#2ECC8A', icon: '✅' },
-  'Tạm dừng':   { color: '#F75454', icon: '⏸️' },
+  'Đang tuyển': { color: '#FFAA2B', icon: '🔥' },
+  'Hoàn thành': { color: '#00E08F', icon: '✅' },
+  'Tạm dừng':   { color: '#FF4D6D', icon: '⏸️' },
 }
 
 function StatusBadge({ status }: { status: string }) {
@@ -102,10 +102,10 @@ export default function TabOrders({ data }: { data: DashboardData }) {
       {/* KPI CARDS */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 12, marginBottom: 16 }}>
         {[
-          { label: 'Tổng vị trí',      value: filtered.length, icon: '📋', color: '#4F8EF7', sub: `${dangTuyen} đang tuyển` },
-          { label: 'Tổng cần tuyển',   value: tongCanTuyen,    icon: '🎯', color: '#9B6FF7', sub: `chỉ tiêu` },
-          { label: 'Đã offer',          value: tongDaOffer,     icon: '📩', color: '#F5A623', sub: `${tongCanTuyen > 0 ? Math.round(tongDaOffer/tongCanTuyen*100) : 0}% chỉ tiêu` },
-          { label: 'Đã nhận việc',      value: tongDaNhanViec,  icon: '✅', color: '#2ECC8A', sub: `còn lại ${tongConLai}` },
+          { label: 'Tổng vị trí',      value: filtered.length, icon: '📋', color: '#33A6FF', sub: `${dangTuyen} đang tuyển` },
+          { label: 'Tổng cần tuyển',   value: tongCanTuyen,    icon: '🎯', color: '#B44CFF', sub: `chỉ tiêu` },
+          { label: 'Đã offer',          value: tongDaOffer,     icon: '📩', color: '#FFAA2B', sub: `${tongCanTuyen > 0 ? Math.round(tongDaOffer/tongCanTuyen*100) : 0}% chỉ tiêu` },
+          { label: 'Đã nhận việc',      value: tongDaNhanViec,  icon: '✅', color: '#00E08F', sub: `còn lại ${tongConLai}` },
         ].map(k => (
           <KpiCard key={k.label} label={k.label} value={k.value} sub={k.sub} color={k.color} icon={k.icon} />
         ))}
@@ -114,9 +114,9 @@ export default function TabOrders({ data }: { data: DashboardData }) {
       {/* STATUS SUMMARY ROW */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 12, marginBottom: 16 }}>
         {[
-          { label: 'Đang tuyển', count: dangTuyen,  color: '#F5A623', icon: '🔥' },
-          { label: 'Hoàn thành', count: hoanThanh,  color: '#2ECC8A', icon: '✅' },
-          { label: 'Tạm dừng',   count: tamDung,    color: '#F75454', icon: '⏸️' },
+          { label: 'Đang tuyển', count: dangTuyen,  color: '#FFAA2B', icon: '🔥' },
+          { label: 'Hoàn thành', count: hoanThanh,  color: '#00E08F', icon: '✅' },
+          { label: 'Tạm dừng',   count: tamDung,    color: '#FF4D6D', icon: '⏸️' },
         ].map(s => (
           <div key={s.label} className="ui-kpi" style={{
             ['--kpi-c' as string]: s.color,
@@ -201,7 +201,7 @@ export default function TabOrders({ data }: { data: DashboardData }) {
                 return (
                   <tr key={i} style={{ background: i%2===0 ? 'var(--bg3)' : 'var(--bg4)', borderBottom: '1px solid var(--border)' }}>
                     {/* Tháng */}
-                    <td style={{ padding: '10px 12px', color: '#4F8EF7', fontFamily: 'Space Mono,monospace', fontSize: 11, fontWeight: 700 }}>
+                    <td style={{ padding: '10px 12px', color: '#33A6FF', fontFamily: 'Space Mono,monospace', fontSize: 11, fontWeight: 700 }}>
                       {o.thangNum ? `T${o.thangNum}` : o.thang || '—'}
                     </td>
                     {/* Ngày nhận order */}
@@ -212,7 +212,7 @@ export default function TabOrders({ data }: { data: DashboardData }) {
                     <td style={{ padding: '10px 12px', color: 'var(--text2)' }}>
                       <span style={{
                         background: 'var(--bg4)', padding: '2px 8px', borderRadius: 4,
-                        fontSize: 10, fontWeight: 500, color: '#9B6FF7', border: '1px solid #9B6FF733',
+                        fontSize: 10, fontWeight: 500, color: '#B44CFF', border: '1px solid #B44CFF33',
                       }}>
                         {o.team || '—'}
                       </span>
@@ -233,34 +233,34 @@ export default function TabOrders({ data }: { data: DashboardData }) {
                     </td>
                     {/* Cần tuyển K */}
                     <td style={{ padding: '10px 12px', textAlign: 'center' }}>
-                      <span style={{ fontFamily: 'Space Mono,monospace', fontSize: 15, fontWeight: 700, color: '#4F8EF7' }}>
+                      <span style={{ fontFamily: 'Space Mono,monospace', fontSize: 15, fontWeight: 700, color: '#33A6FF' }}>
                         {o.soLuong || '—'}
                       </span>
                     </td>
                     {/* Đã offer L */}
                     <td style={{ padding: '10px 12px', textAlign: 'center' }}>
-                      <span style={{ fontFamily: 'Space Mono,monospace', fontSize: 13, fontWeight: 600, color: '#F5A623' }}>
+                      <span style={{ fontFamily: 'Space Mono,monospace', fontSize: 13, fontWeight: 600, color: '#FFAA2B' }}>
                         {o.daOffer || '—'}
                       </span>
                     </td>
                     {/* Đã nhận việc M */}
                     <td style={{ padding: '10px 12px', textAlign: 'center' }}>
                       <span style={{ fontFamily: 'Space Mono,monospace', fontSize: 13, fontWeight: 700,
-                        color: o.daNhanViec >= o.soLuong && o.soLuong > 0 ? '#2ECC8A' : o.daNhanViec > 0 ? '#FFD700' : 'var(--text3)' }}>
+                        color: o.daNhanViec >= o.soLuong && o.soLuong > 0 ? '#00E08F' : o.daNhanViec > 0 ? '#FFD84D' : 'var(--text3)' }}>
                         {o.daNhanViec || '—'}
                       </span>
                     </td>
                     {/* Còn lại N */}
                     <td style={{ padding: '10px 12px', textAlign: 'center' }}>
                       <span style={{ fontFamily: 'Space Mono,monospace', fontSize: 13, fontWeight: 700,
-                        color: o.conLai > 0 ? '#F75454' : '#2ECC8A' }}>
+                        color: o.conLai > 0 ? '#FF4D6D' : '#00E08F' }}>
                         {o.conLai > 0 ? o.conLai : '✓'}
                       </span>
                     </td>
                     {/* Tiến độ */}
                     <td style={{ padding: '10px 12px', minWidth: 120 }}>
                       <ProgressBar value={o.daNhanViec} max={o.soLuong}
-                        color={tiendoPct >= 100 ? '#2ECC8A' : tiendoPct >= 50 ? '#F5A623' : '#F75454'} />
+                        color={tiendoPct >= 100 ? '#00E08F' : tiendoPct >= 50 ? '#FFAA2B' : '#FF4D6D'} />
                     </td>
                   </tr>
                 )
@@ -273,13 +273,13 @@ export default function TabOrders({ data }: { data: DashboardData }) {
                   <td colSpan={7} style={{ padding: '10px 12px', fontWeight: 700, color: 'var(--text)', fontSize: 11 }}>
                     Tổng cộng ({filtered.length} đơn hàng)
                   </td>
-                  <td style={{ padding: '10px 12px', textAlign: 'center', fontFamily: 'Space Mono,monospace', fontWeight: 700, color: '#4F8EF7', fontSize: 13 }}>{tongCanTuyen}</td>
-                  <td style={{ padding: '10px 12px', textAlign: 'center', fontFamily: 'Space Mono,monospace', fontWeight: 700, color: '#F5A623', fontSize: 13 }}>{tongDaOffer}</td>
-                  <td style={{ padding: '10px 12px', textAlign: 'center', fontFamily: 'Space Mono,monospace', fontWeight: 700, color: '#2ECC8A', fontSize: 13 }}>{tongDaNhanViec}</td>
-                  <td style={{ padding: '10px 12px', textAlign: 'center', fontFamily: 'Space Mono,monospace', fontWeight: 700, color: tongConLai > 0 ? '#F75454' : '#2ECC8A', fontSize: 13 }}>{tongConLai}</td>
+                  <td style={{ padding: '10px 12px', textAlign: 'center', fontFamily: 'Space Mono,monospace', fontWeight: 700, color: '#33A6FF', fontSize: 13 }}>{tongCanTuyen}</td>
+                  <td style={{ padding: '10px 12px', textAlign: 'center', fontFamily: 'Space Mono,monospace', fontWeight: 700, color: '#FFAA2B', fontSize: 13 }}>{tongDaOffer}</td>
+                  <td style={{ padding: '10px 12px', textAlign: 'center', fontFamily: 'Space Mono,monospace', fontWeight: 700, color: '#00E08F', fontSize: 13 }}>{tongDaNhanViec}</td>
+                  <td style={{ padding: '10px 12px', textAlign: 'center', fontFamily: 'Space Mono,monospace', fontWeight: 700, color: tongConLai > 0 ? '#FF4D6D' : '#00E08F', fontSize: 13 }}>{tongConLai}</td>
                   <td style={{ padding: '10px 12px' }}>
                     <ProgressBar value={tongDaNhanViec} max={tongCanTuyen}
-                      color={tongCanTuyen > 0 && tongDaNhanViec >= tongCanTuyen ? '#2ECC8A' : '#F5A623'} />
+                      color={tongCanTuyen > 0 && tongDaNhanViec >= tongCanTuyen ? '#00E08F' : '#FFAA2B'} />
                   </td>
                 </tr>
               </tfoot>

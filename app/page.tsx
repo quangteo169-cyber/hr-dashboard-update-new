@@ -17,7 +17,7 @@ export default async function Home() {
     return (
       <div style={{ display:'flex', alignItems:'center', justifyContent:'center', minHeight:'100vh', flexDirection:'column', gap:16 }}>
         <div style={{ fontSize:40 }}>⚠️</div>
-        <div style={{ color:'#F75454', fontWeight:600, fontSize:15 }}>Không thể tải dữ liệu</div>
+        <div style={{ color:'#FF4D6D', fontWeight:600, fontSize:15 }}>Không thể tải dữ liệu</div>
         <div style={{ color:'#8B949E', fontSize:12, maxWidth:400, textAlign:'center' }}>{error}</div>
         <div style={{ color:'#6E7681', fontSize:11, maxWidth:400, textAlign:'center', marginTop:8 }}>
           Hãy chắc chắn Google Sheet ở chế độ &quot;Anyone with link can view&quot;

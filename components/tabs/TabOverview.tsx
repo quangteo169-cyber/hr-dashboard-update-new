@@ -38,16 +38,16 @@ export default function TabOverview({ data }: { data: DashboardData }) {
   const { stats: s } = filtered
 
   const kpis1 = [
-    { label:'Tổng CV Thu Thập', value:s.total,      sub:'L0 — Toàn bộ CV nhận được',            color:'#4F8EF7', icon:'📥', pct:100 },
-    { label:'CV Pass Lọc HR',   value:s.hrPass,     sub:`${p(s.hrPass,s.total)} tổng CV · L1`,  color:'#2ECC8A', icon:'✅', pct:s.hrPass/(s.total||1)*100 },
-    { label:'Đồng Ý PV',        value:s.dongYPV,    sub:`${p(s.dongYPV,s.total)} tổng CV · L3`, color:'#F5A623', icon:'📞', pct:s.dongYPV/(s.total||1)*100 },
-    { label:'Tới Phỏng Vấn',    value:s.thamGiaPV,  sub:`${p(s.thamGiaPV,s.total)} tổng CV · L3A`, color:'#9B6FF7', icon:'🎤', pct:s.thamGiaPV/(s.total||1)*100 },
+    { label:'Tổng CV Thu Thập', value:s.total,      sub:'L0 — Toàn bộ CV nhận được',            color:'#33A6FF', icon:'📥', pct:100 },
+    { label:'CV Pass Lọc HR',   value:s.hrPass,     sub:`${p(s.hrPass,s.total)} tổng CV · L1`,  color:'#00E08F', icon:'✅', pct:s.hrPass/(s.total||1)*100 },
+    { label:'Đồng Ý PV',        value:s.dongYPV,    sub:`${p(s.dongYPV,s.total)} tổng CV · L3`, color:'#FFAA2B', icon:'📞', pct:s.dongYPV/(s.total||1)*100 },
+    { label:'Tới Phỏng Vấn',    value:s.thamGiaPV,  sub:`${p(s.thamGiaPV,s.total)} tổng CV · L3A`, color:'#B44CFF', icon:'🎤', pct:s.thamGiaPV/(s.total||1)*100 },
   ]
   const kpis2 = [
-    { label:'Pass PV V1',          value:s.passPV,   sub:`${p(s.passPV,s.total)} tổng CV · L4A`,  color:'#1ACFCF', icon:'🏆', pct:s.passPV/(s.total||1)*100 },
-    { label:'Có Lịch Đi Làm',     value:s.dongYLam, sub:`${p(s.dongYLam,s.total)} tổng CV · L7`, color:'#F5A623', icon:'📅', pct:s.dongYLam/(s.total||1)*100 },
-    { label:'UV Đi Làm Ngày Đầu', value:s.nhanViec, sub:`${p(s.nhanViec,s.total)} tổng CV · L8`, color:'#2ECC8A', icon:'🚀', pct:s.nhanViec/(s.total||1)*100 },
-    { label:'UV Đủ 10 Ngày',      value:s.d10,      sub:`${p(s.d10,s.total)} tổng CV · L9`,      color:'#FFD700', icon:'⭐', pct:s.d10/(s.total||1)*100 },
+    { label:'Pass PV V1',          value:s.passPV,   sub:`${p(s.passPV,s.total)} tổng CV · L4A`,  color:'#00E5D0', icon:'🏆', pct:s.passPV/(s.total||1)*100 },
+    { label:'Có Lịch Đi Làm',     value:s.dongYLam, sub:`${p(s.dongYLam,s.total)} tổng CV · L7`, color:'#FFAA2B', icon:'📅', pct:s.dongYLam/(s.total||1)*100 },
+    { label:'UV Đi Làm Ngày Đầu', value:s.nhanViec, sub:`${p(s.nhanViec,s.total)} tổng CV · L8`, color:'#00E08F', icon:'🚀', pct:s.nhanViec/(s.total||1)*100 },
+    { label:'UV Đủ 10 Ngày',      value:s.d10,      sub:`${p(s.d10,s.total)} tổng CV · L9`,      color:'#FFD84D', icon:'⭐', pct:s.d10/(s.total||1)*100 },
   ]
 
   const monthChart = data.byMonth.map(m => ({
@@ -57,7 +57,7 @@ export default function TabOverview({ data }: { data: DashboardData }) {
     'Nhận việc': m.nhanViec,
   }))
 
-  const COLORS = ['#4F8EF7', '#2ECC8A', '#FFD700']
+  const COLORS = ['#33A6FF', '#00E08F', '#FFD84D']
 
   const monthLabel = selectedMonth === null ? 'Cả năm 2026' : `Tháng ${selectedMonth}/2026`
 
@@ -133,14 +133,14 @@ export default function TabOverview({ data }: { data: DashboardData }) {
         <Card>
           <CardTitle sub={`${monthLabel} — Tỷ lệ trên tổng CV thu thập`}>📈 Phễu Tuyển Dụng</CardTitle>
           <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
-            <FunnelBar label="L0 — CV thu thập"        count={s.total}     total={s.total}     color="#4F8EF7" sublabel="100%" />
-            <FunnelBar label="L1 — HR Pass (cột P)"    count={s.hrPass}    total={s.total}     color="#2ECC8A" />
-            <FunnelBar label="L3 — Đồng ý PV (cột Q)" count={s.dongYPV}   total={s.total}     color="#F5A623" />
-            <FunnelBar label="L3A — Tới PV (cột U)"   count={s.thamGiaPV} total={s.total}     color="#9B6FF7" />
-            <FunnelBar label="L4A — Pass PV (cột V)"  count={s.passPV}    total={s.total}     color="#1ACFCF" />
-            <FunnelBar label="L7 — Lịch đi làm (cột X)" count={s.dongYLam} total={s.total}   color="#F5A623" />
-            <FunnelBar label="L8 — Đi làm (cột Z)"    count={s.nhanViec}  total={s.total}     color="#2ECC8A" />
-            <FunnelBar label="L9 — Đủ 10 ngày (cột AA)" count={s.d10}     total={s.total}     color="#FFD700" />
+            <FunnelBar label="L0 — CV thu thập"        count={s.total}     total={s.total}     color="#33A6FF" sublabel="100%" />
+            <FunnelBar label="L1 — HR Pass (cột P)"    count={s.hrPass}    total={s.total}     color="#00E08F" />
+            <FunnelBar label="L3 — Đồng ý PV (cột Q)" count={s.dongYPV}   total={s.total}     color="#FFAA2B" />
+            <FunnelBar label="L3A — Tới PV (cột U)"   count={s.thamGiaPV} total={s.total}     color="#B44CFF" />
+            <FunnelBar label="L4A — Pass PV (cột V)"  count={s.passPV}    total={s.total}     color="#00E5D0" />
+            <FunnelBar label="L7 — Lịch đi làm (cột X)" count={s.dongYLam} total={s.total}   color="#FFAA2B" />
+            <FunnelBar label="L8 — Đi làm (cột Z)"    count={s.nhanViec}  total={s.total}     color="#00E08F" />
+            <FunnelBar label="L9 — Đủ 10 ngày (cột AA)" count={s.d10}     total={s.total}     color="#FFD84D" />
           </div>
         </Card>
 
@@ -166,13 +166,13 @@ export default function TabOverview({ data }: { data: DashboardData }) {
           {/* Tỷ lệ chuyển đổi */}
           <div style={{ display:'flex', flexDirection:'column', gap:6 }}>
             {[
-              { label:'L0 → L1  CV → HR Pass',           pct: p(s.hrPass,s.total),       color:'#2ECC8A' },
-              { label:'L1 → L3  HR Pass → Đồng ý PV',   pct: p(s.dongYPV,s.hrPass),     color:'#F5A623' },
-              { label:'L3 → L3A Đồng ý → Tới PV',       pct: p(s.thamGiaPV,s.dongYPV),  color:'#9B6FF7' },
-              { label:'L3A→ L4A PV → Pass PV',           pct: p(s.passPV,s.thamGiaPV),   color:'#1ACFCF' },
-              { label:'L4A→ L7  Pass → Lịch đi làm',    pct: p(s.dongYLam,s.passPV),    color:'#F5A623' },
-              { label:'L7 → L8  Lịch → Đi làm',         pct: p(s.nhanViec,s.dongYLam),  color:'#2ECC8A' },
-              { label:'L8 → L9  Đi làm → Đủ 10 ngày',  pct: p(s.d10,s.nhanViec),       color:'#FFD700' },
+              { label:'L0 → L1  CV → HR Pass',           pct: p(s.hrPass,s.total),       color:'#00E08F' },
+              { label:'L1 → L3  HR Pass → Đồng ý PV',   pct: p(s.dongYPV,s.hrPass),     color:'#FFAA2B' },
+              { label:'L3 → L3A Đồng ý → Tới PV',       pct: p(s.thamGiaPV,s.dongYPV),  color:'#B44CFF' },
+              { label:'L3A→ L4A PV → Pass PV',           pct: p(s.passPV,s.thamGiaPV),   color:'#00E5D0' },
+              { label:'L4A→ L7  Pass → Lịch đi làm',    pct: p(s.dongYLam,s.passPV),    color:'#FFAA2B' },
+              { label:'L7 → L8  Lịch → Đi làm',         pct: p(s.nhanViec,s.dongYLam),  color:'#00E08F' },
+              { label:'L8 → L9  Đi làm → Đủ 10 ngày',  pct: p(s.d10,s.nhanViec),       color:'#FFD84D' },
             ].map(r => (
               <div key={r.label} style={{ display:'flex', justifyContent:'space-between', alignItems:'center',
                 padding:'5px 8px', background:'var(--bg4)', borderRadius:6 }}>
@@ -196,10 +196,10 @@ export default function TabOverview({ data }: { data: DashboardData }) {
               <div style={{ fontSize:11, color:'var(--text3)', width:18, textAlign:'right' }}>#{i+1}</div>
               <div style={{ flex:1, fontSize:11, color:'var(--text)', fontWeight:500 }}>{src.nguon}</div>
               <div style={{ width:80, height:4, background:'var(--bg4)', borderRadius:2, overflow:'hidden' }}>
-                <div style={{ height:'100%', width:`${data.bySource[0]?.total>0?src.total/data.bySource[0].total*100:0}%`, background:'#4F8EF7', borderRadius:2 }} />
+                <div style={{ height:'100%', width:`${data.bySource[0]?.total>0?src.total/data.bySource[0].total*100:0}%`, background:'#33A6FF', borderRadius:2 }} />
               </div>
-              <div style={{ fontFamily:'Space Mono,monospace', fontSize:11, color:'#4F8EF7', width:30, textAlign:'right' }}>{src.total}</div>
-              <div style={{ fontSize:10, color:'#2ECC8A', width:36, textAlign:'right' }}>{p(src.hrPass,src.total)}</div>
+              <div style={{ fontFamily:'Space Mono,monospace', fontSize:11, color:'#33A6FF', width:30, textAlign:'right' }}>{src.total}</div>
+              <div style={{ fontSize:10, color:'#00E08F', width:36, textAlign:'right' }}>{p(src.hrPass,src.total)}</div>
             </div>
           ))}
         </Card>
@@ -213,21 +213,21 @@ export default function TabOverview({ data }: { data: DashboardData }) {
             }}>
               <div style={{ display:'flex', justifyContent:'space-between', marginBottom:8 }}>
                 <div>
-                  <div style={{ fontSize:13, fontWeight:600, color:['#9B6FF7','#F5A623'][i]||'#4F8EF7' }}>{n.nvTD}</div>
+                  <div style={{ fontSize:13, fontWeight:600, color:['#B44CFF','#FFAA2B'][i]||'#33A6FF' }}>{n.nvTD}</div>
                   <div style={{ fontSize:9, color:'var(--text3)', marginTop:2 }}>Chuyên viên tuyển dụng</div>
                 </div>
                 <div style={{ textAlign:'right' }}>
-                  <div style={{ fontFamily:'Space Mono,monospace', fontSize:20, fontWeight:700, color:['#9B6FF7','#F5A623'][i]||'#4F8EF7' }}>{n.total}</div>
+                  <div style={{ fontFamily:'Space Mono,monospace', fontSize:20, fontWeight:700, color:['#B44CFF','#FFAA2B'][i]||'#33A6FF' }}>{n.total}</div>
                   <div style={{ fontSize:9, color:'var(--text3)' }}>CV phụ trách</div>
                 </div>
               </div>
               <div style={{ height:3, background:'var(--border)', borderRadius:2 }}>
-                <div style={{ height:'100%', width:`${data.stats.total>0?n.total/data.stats.total*100:0}%`, background:['#9B6FF7','#F5A623'][i]||'#4F8EF7', borderRadius:2 }} />
+                <div style={{ height:'100%', width:`${data.stats.total>0?n.total/data.stats.total*100:0}%`, background:['#B44CFF','#FFAA2B'][i]||'#33A6FF', borderRadius:2 }} />
               </div>
               <div style={{ display:'flex', gap:12, marginTop:8, fontSize:10, color:'var(--text3)' }}>
-                <span>Pass HR: <b style={{ color:'#2ECC8A' }}>{n.hrPass}</b></span>
-                <span>Nhận việc: <b style={{ color:'#FFD700' }}>{n.nhanViec}</b></span>
-                <span>Tỷ lệ: <b style={{ color:'#1ACFCF' }}>{p(n.nhanViec,n.total)}</b></span>
+                <span>Pass HR: <b style={{ color:'#00E08F' }}>{n.hrPass}</b></span>
+                <span>Nhận việc: <b style={{ color:'#FFD84D' }}>{n.nhanViec}</b></span>
+                <span>Tỷ lệ: <b style={{ color:'#00E5D0' }}>{p(n.nhanViec,n.total)}</b></span>
               </div>
             </div>
           ))}

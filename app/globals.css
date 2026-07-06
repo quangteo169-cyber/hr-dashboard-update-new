@@ -1,39 +1,41 @@
-@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700&family=Chakra+Petch:wght@500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap');
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  /* Dark mode defaults — deeper, slightly blue-tinted for more depth */
-  --bg:      #0B0E14;
-  --bg2:     #11151D;
-  --bg3:     #161B26;
-  --bg4:     #1E2430;
-  --border:  #262D3A;
-  --border2: #343D4D;
-  --text:    #EAF0F7;
-  --text2:   #93A0B4;
-  --text3:   #66718A;
+  /* Dark mode defaults — deep space blue, gaming/tech vibe */
+  --bg:      #05080F;
+  --bg2:     #0A101C;
+  --bg3:     #0F1728;
+  --bg4:     #16223A;
+  --border:  #1D2B47;
+  --border2: #2D4066;
+  --text:    #E8F1FF;
+  --text2:   #8FA3C7;
+  --text3:   #5D7199;
 
   /* Elevation + ambient (theme-dependent, also set via JS) */
   --shadow-sm: 0 1px 2px rgba(0,0,0,.35);
   --shadow:    0 1px 2px rgba(0,0,0,.4), 0 12px 32px -16px rgba(0,0,0,.7);
   --shadow-lg: 0 2px 4px rgba(0,0,0,.35), 0 24px 48px -20px rgba(0,0,0,.65);
-  --ambient:   radial-gradient(1200px 460px at 50% -8%, rgba(79,142,247,.14), rgba(155,111,247,.07) 38%, transparent 68%),
-               radial-gradient(900px 380px at 88% 0%, rgba(26,207,207,.07), transparent 60%);
+  --ambient:   radial-gradient(1100px 480px at 18% -10%, rgba(0,200,255,.15), transparent 62%),
+               radial-gradient(1000px 420px at 82% -8%, rgba(180,76,255,.13), transparent 60%),
+               radial-gradient(700px 320px at 50% 0%, rgba(255,78,205,.06), transparent 65%);
   --card-hi:   rgba(255,255,255,.045);
-  --row-hover: rgba(79,142,247,.09);
+  --row-hover: rgba(51,166,255,.09);
+  --gridline:  rgba(51,166,255,.055);
 
   /* Accent colors — fixed regardless of mode */
-  --blue:    #4F8EF7;
-  --green:   #2ECC8A;
-  --amber:   #F5A623;
-  --red:     #F75454;
-  --purple:  #9B6FF7;
-  --teal:    #1ACFCF;
-  --gold:    #FFD700;
+  --blue:    #33A6FF;
+  --green:   #00E08F;
+  --amber:   #FFAA2B;
+  --red:     #FF4D6D;
+  --purple:  #B44CFF;
+  --teal:    #00E5D0;
+  --gold:    #FFD84D;
 
-  /* Signature gradient used across the UI */
-  --accent-grad: linear-gradient(135deg, #4F8EF7, #9B6FF7 55%, #1ACFCF);
+  /* Signature gradient used across the UI — neon cyan → violet → magenta */
+  --accent-grad: linear-gradient(135deg, #00C8FF, #7C4DFF 55%, #FF4ECD);
 }
 
 body {
@@ -55,9 +57,9 @@ body {
 ::-webkit-scrollbar-thumb:hover { background: var(--text3); background-clip: padding-box; }
 
 .mono     { font-family: 'Space Mono', monospace; }
-.display  { font-family: 'Space Grotesk', 'Be Vietnam Pro', sans-serif; }
+.display  { font-family: 'Chakra Petch', 'Be Vietnam Pro', sans-serif; }
 
-::selection { background: rgba(79,142,247,.3); }
+::selection { background: rgba(51,166,255,.3); }
 
 /* ── ANIMATIONS ─────────────────────────────────────────────── */
 @keyframes fadeUp {
@@ -101,12 +103,12 @@ body {
 
 /* Inputs / selects — focus ring */
 .ui-input { transition: box-shadow .15s ease, border-color .15s ease; }
-.ui-input:hover  { box-shadow: 0 0 0 2px rgba(79,142,247,.12); }
-.ui-input:focus  { box-shadow: 0 0 0 3px rgba(79,142,247,.22); }
+.ui-input:hover  { box-shadow: 0 0 0 2px rgba(51,166,255,.12); }
+.ui-input:focus  { box-shadow: 0 0 0 3px rgba(51,166,255,.22); }
 
 /* Filter chips (month selector, …) */
 .chip { transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease, color .15s ease, background .15s ease; }
-.chip:hover { transform: translateY(-1px); box-shadow: 0 4px 12px -6px rgba(79,142,247,.55); }
+.chip:hover { transform: translateY(-1px); box-shadow: 0 4px 12px -6px rgba(51,166,255,.55); }
 
 /* Bars that grow in on mount */
 .ui-grow { animation: growW .8s cubic-bezier(.22, 1, .36, 1) both; }

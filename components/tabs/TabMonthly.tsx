@@ -30,11 +30,11 @@ export default function TabMonthly({ data }: { data: DashboardData }) {
             <YAxis tick={{ fill:'var(--text2)', fontSize:10 }} axisLine={false} tickLine={false} />
             <Tooltip contentStyle={{ background:'var(--bg4)', border:'1px solid var(--border)', borderRadius:8, fontSize:11 }} />
             <Legend wrapperStyle={{ fontSize:11, paddingTop:12 }} />
-            <Line type="monotone" dataKey="Tổng CV"      stroke="#4F8EF7" strokeWidth={2} dot={{ r:4 }} />
-            <Line type="monotone" dataKey="L1 HR Pass"   stroke="#2ECC8A" strokeWidth={2} dot={{ r:4 }} />
-            <Line type="monotone" dataKey="L3A Tới PV"   stroke="#9B6FF7" strokeWidth={2} dot={{ r:4 }} />
-            <Line type="monotone" dataKey="L8 Nhận việc" stroke="#FFD700" strokeWidth={2} dot={{ r:4 }} />
-            <Line type="monotone" dataKey="L9 10 ngày"   stroke="#1ACFCF" strokeWidth={2} dot={{ r:4 }} />
+            <Line type="monotone" dataKey="Tổng CV"      stroke="#33A6FF" strokeWidth={2} dot={{ r:4 }} />
+            <Line type="monotone" dataKey="L1 HR Pass"   stroke="#00E08F" strokeWidth={2} dot={{ r:4 }} />
+            <Line type="monotone" dataKey="L3A Tới PV"   stroke="#B44CFF" strokeWidth={2} dot={{ r:4 }} />
+            <Line type="monotone" dataKey="L8 Nhận việc" stroke="#FFD84D" strokeWidth={2} dot={{ r:4 }} />
+            <Line type="monotone" dataKey="L9 10 ngày"   stroke="#00E5D0" strokeWidth={2} dot={{ r:4 }} />
           </LineChart>
         </ResponsiveContainer>
       </Card>
@@ -46,13 +46,13 @@ export default function TabMonthly({ data }: { data: DashboardData }) {
             <div style={{ display:'flex', flexDirection:'column', gap:6 }}>
               {[
                 { label:'L0  CV thu thập',       val:m.total,     color:'#6B7280', pct:p(m.total, data.stats.total) + ' cả năm' },
-                { label:'L1  HR Pass (cột P)',    val:m.hrPass,    color:'#4F8EF7', pct:p(m.hrPass, m.total)         },
-                { label:'L3  Đồng ý PV (cột Q)', val:m.dongYPV,   color:'#F5A623', pct:p(m.dongYPV, m.hrPass)       },
-                { label:'L3A Tới PV (cột U)',     val:m.thamGiaPV, color:'#9B6FF7', pct:p(m.thamGiaPV, m.dongYPV)   },
-                { label:'L4A Pass PV (cột V)',    val:m.passPV,    color:'#1ACFCF', pct:p(m.passPV, m.thamGiaPV)    },
-                { label:'L7  Lịch đi làm (cột X)',val:m.dongYLam, color:'#F5A623', pct:p(m.dongYLam, m.passPV)     },
-                { label:'L8  Đi làm (cột Z)',     val:m.nhanViec,  color:'#2ECC8A', pct:p(m.nhanViec, m.dongYLam)   },
-                { label:'L9  Đủ 10 ngày (cột AA)',val:m.d10,       color:'#FFD700', pct:p(m.d10, m.nhanViec)        },
+                { label:'L1  HR Pass (cột P)',    val:m.hrPass,    color:'#33A6FF', pct:p(m.hrPass, m.total)         },
+                { label:'L3  Đồng ý PV (cột Q)', val:m.dongYPV,   color:'#FFAA2B', pct:p(m.dongYPV, m.hrPass)       },
+                { label:'L3A Tới PV (cột U)',     val:m.thamGiaPV, color:'#B44CFF', pct:p(m.thamGiaPV, m.dongYPV)   },
+                { label:'L4A Pass PV (cột V)',    val:m.passPV,    color:'#00E5D0', pct:p(m.passPV, m.thamGiaPV)    },
+                { label:'L7  Lịch đi làm (cột X)',val:m.dongYLam, color:'#FFAA2B', pct:p(m.dongYLam, m.passPV)     },
+                { label:'L8  Đi làm (cột Z)',     val:m.nhanViec,  color:'#00E08F', pct:p(m.nhanViec, m.dongYLam)   },
+                { label:'L9  Đủ 10 ngày (cột AA)',val:m.d10,       color:'#FFD84D', pct:p(m.d10, m.nhanViec)        },
               ].map(row => (
                 <div key={row.label} style={{ display:'flex', justifyContent:'space-between',
                   alignItems:'center', padding:'6px 10px', background:'var(--bg4)', borderRadius:6 }}>

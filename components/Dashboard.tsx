@@ -71,39 +71,41 @@ export default function Dashboard({ data: initialData }: { data: DashboardData }
   useEffect(() => {
     const root = document.documentElement
     if (dark) {
-      root.style.setProperty('--bg',      '#0B0E14')
-      root.style.setProperty('--bg2',     '#11151D')
-      root.style.setProperty('--bg3',     '#161B26')
-      root.style.setProperty('--bg4',     '#1E2430')
-      root.style.setProperty('--border',  '#262D3A')
-      root.style.setProperty('--border2', '#343D4D')
-      root.style.setProperty('--text',    '#EAF0F7')
-      root.style.setProperty('--text2',   '#93A0B4')
-      root.style.setProperty('--text3',   '#66718A')
+      root.style.setProperty('--bg',      '#05080F')
+      root.style.setProperty('--bg2',     '#0A101C')
+      root.style.setProperty('--bg3',     '#0F1728')
+      root.style.setProperty('--bg4',     '#16223A')
+      root.style.setProperty('--border',  '#1D2B47')
+      root.style.setProperty('--border2', '#2D4066')
+      root.style.setProperty('--text',    '#E8F1FF')
+      root.style.setProperty('--text2',   '#8FA3C7')
+      root.style.setProperty('--text3',   '#5D7199')
       root.style.setProperty('--shadow-sm', '0 1px 2px rgba(0,0,0,.35)')
       root.style.setProperty('--shadow',    '0 1px 2px rgba(0,0,0,.4), 0 12px 32px -16px rgba(0,0,0,.7)')
       root.style.setProperty('--shadow-lg', '0 2px 4px rgba(0,0,0,.35), 0 24px 48px -20px rgba(0,0,0,.65)')
       root.style.setProperty('--card-hi',   'rgba(255,255,255,.045)')
-      root.style.setProperty('--row-hover', 'rgba(79,142,247,.09)')
-      root.style.setProperty('--ambient',   'radial-gradient(1200px 460px at 50% -8%, rgba(79,142,247,.14), rgba(155,111,247,.07) 38%, transparent 68%), radial-gradient(900px 380px at 88% 0%, rgba(26,207,207,.07), transparent 60%)')
-      document.body.style.background = '#0B0E14'
+      root.style.setProperty('--row-hover', 'rgba(51,166,255,.09)')
+      root.style.setProperty('--gridline',  'rgba(51,166,255,.055)')
+      root.style.setProperty('--ambient',   'radial-gradient(1100px 480px at 18% -10%, rgba(0,200,255,.15), transparent 62%), radial-gradient(1000px 420px at 82% -8%, rgba(180,76,255,.13), transparent 60%), radial-gradient(700px 320px at 50% 0%, rgba(255,78,205,.06), transparent 65%)')
+      document.body.style.background = '#05080F'
     } else {
-      root.style.setProperty('--bg',      '#F1F4F9')
+      root.style.setProperty('--bg',      '#EEF3FA')
       root.style.setProperty('--bg2',     '#FFFFFF')
       root.style.setProperty('--bg3',     '#FFFFFF')
-      root.style.setProperty('--bg4',     '#EDF1F7')
-      root.style.setProperty('--border',  '#E2E8F2')
-      root.style.setProperty('--border2', '#CDD6E4')
-      root.style.setProperty('--text',    '#0F1729')
-      root.style.setProperty('--text2',   '#5B6678')
-      root.style.setProperty('--text3',   '#8A93A6')
+      root.style.setProperty('--bg4',     '#E9EFF9')
+      root.style.setProperty('--border',  '#D9E3F2')
+      root.style.setProperty('--border2', '#BCCCE4')
+      root.style.setProperty('--text',    '#0D1526')
+      root.style.setProperty('--text2',   '#52617A')
+      root.style.setProperty('--text3',   '#8291A8')
       root.style.setProperty('--shadow-sm', '0 1px 2px rgba(16,24,40,.05)')
       root.style.setProperty('--shadow',    '0 1px 2px rgba(16,24,40,.06), 0 12px 32px -16px rgba(16,24,40,.16)')
       root.style.setProperty('--shadow-lg', '0 2px 4px rgba(16,24,40,.06), 0 24px 48px -20px rgba(16,24,40,.22)')
       root.style.setProperty('--card-hi',   'rgba(255,255,255,.9)')
-      root.style.setProperty('--row-hover', 'rgba(79,142,247,.08)')
-      root.style.setProperty('--ambient',   'radial-gradient(1200px 460px at 50% -8%, rgba(79,142,247,.10), rgba(155,111,247,.04) 38%, transparent 70%), radial-gradient(900px 380px at 88% 0%, rgba(26,207,207,.05), transparent 60%)')
-      document.body.style.background = '#F1F4F9'
+      root.style.setProperty('--row-hover', 'rgba(51,166,255,.08)')
+      root.style.setProperty('--gridline',  'rgba(30,70,140,.05)')
+      root.style.setProperty('--ambient',   'radial-gradient(1100px 480px at 18% -10%, rgba(0,200,255,.07), transparent 58%), radial-gradient(1000px 420px at 82% -8%, rgba(180,76,255,.05), transparent 55%), radial-gradient(700px 320px at 50% 0%, rgba(255,78,205,.025), transparent 60%)')
+      document.body.style.background = '#EEF3FA'
     }
   }, [dark])
 
@@ -135,7 +137,7 @@ export default function Dashboard({ data: initialData }: { data: DashboardData }
             disabled={refreshing}
             title="Cập nhật ngay"
             className={styles.headerBtn}
-            style={{ marginRight:16, color:refreshing ? 'var(--text3)' : '#2ECC8A' }}
+            style={{ marginRight:16, color:refreshing ? 'var(--text3)' : '#00E08F' }}
           >
             {refreshing ? '⏳ Đang tải...' : `🔄 ${countdown}s`}
           </button>

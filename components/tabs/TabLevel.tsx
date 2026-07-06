@@ -12,13 +12,13 @@ export default function TabLevel({ data }: { data: DashboardData }) {
 
   // Funnel chuyển đổi giữa các level chính
   const funnelSteps = [
-    { from:'L0',  to:'L1',   fi:s.total,     fo:s.hrPass,     label:'CV thu thập → Pass lọc HR',           color:'#2ECC8A' },
-    { from:'L1',  to:'L3',  fi:s.hrPass,    fo:s.dongYPV,    label:'Pass HR → Đồng ý PV',                 color:'#F5A623' },
-    { from:'L3', to:'L3A',   fi:s.dongYPV,   fo:s.thamGiaPV,  label:'Đồng ý → Tham gia PV',               color:'#9B6FF7' },
-    { from:'L3A',  to:'L4A',  fi:s.thamGiaPV, fo:s.passPV,     label:'Tham gia PV → Pass PV',               color:'#1ACFCF' },
-    { from:'L4A', to:'L7',   fi:s.passPV,    fo:s.dongYLam,   label:'Pass PV → Đồng ý nhận việc',          color:'#4F8EF7' },
-    { from:'L7',  to:'L8',   fi:s.dongYLam,  fo:s.nhanViec,   label:'Đồng ý → Nhận việc ngày đầu',        color:'#2ECC8A' },
-    { from:'L8',  to:'L9',   fi:s.nhanViec,  fo:s.d10,        label:'Ngày đầu → Đủ 10 ngày (Retention)',  color:'#FFD700' },
+    { from:'L0',  to:'L1',   fi:s.total,     fo:s.hrPass,     label:'CV thu thập → Pass lọc HR',           color:'#00E08F' },
+    { from:'L1',  to:'L3',  fi:s.hrPass,    fo:s.dongYPV,    label:'Pass HR → Đồng ý PV',                 color:'#FFAA2B' },
+    { from:'L3', to:'L3A',   fi:s.dongYPV,   fo:s.thamGiaPV,  label:'Đồng ý → Tham gia PV',               color:'#B44CFF' },
+    { from:'L3A',  to:'L4A',  fi:s.thamGiaPV, fo:s.passPV,     label:'Tham gia PV → Pass PV',               color:'#00E5D0' },
+    { from:'L4A', to:'L7',   fi:s.passPV,    fo:s.dongYLam,   label:'Pass PV → Đồng ý nhận việc',          color:'#33A6FF' },
+    { from:'L7',  to:'L8',   fi:s.dongYLam,  fo:s.nhanViec,   label:'Đồng ý → Nhận việc ngày đầu',        color:'#00E08F' },
+    { from:'L8',  to:'L9',   fi:s.nhanViec,  fo:s.d10,        label:'Ngày đầu → Đủ 10 ngày (Retention)',  color:'#FFD84D' },
   ]
 
   const chartData = levelStats
@@ -71,7 +71,7 @@ export default function TabLevel({ data }: { data: DashboardData }) {
                   {/* % / Tổng */}
                   <td style={{ padding:'10px 12px' }}>
                     <span style={{ fontFamily:'Space Mono,monospace', fontSize:13,
-                      fontWeight:700, color: lv.pctTotal >= 50 ? '#2ECC8A' : lv.pctTotal >= 20 ? '#F5A623' : 'var(--text2)' }}>
+                      fontWeight:700, color: lv.pctTotal >= 50 ? '#00E08F' : lv.pctTotal >= 20 ? '#FFAA2B' : 'var(--text2)' }}>
                       {lv.pctTotal}%
                     </span>
                   </td>
@@ -82,7 +82,7 @@ export default function TabLevel({ data }: { data: DashboardData }) {
                       : <span style={{
                           fontFamily:'Space Mono,monospace', fontSize:12,
                           fontWeight:600,
-                          color: lv.pctPrev >= 70 ? '#2ECC8A' : lv.pctPrev >= 40 ? '#F5A623' : '#F75454'
+                          color: lv.pctPrev >= 70 ? '#00E08F' : lv.pctPrev >= 40 ? '#FFAA2B' : '#FF4D6D'
                         }}>{lv.pctPrev}%</span>
                     }
                   </td>
@@ -102,12 +102,12 @@ export default function TabLevel({ data }: { data: DashboardData }) {
                   {/* Status */}
                   <td style={{ padding:'10px 12px' }}>
                     {lv.pctPrev >= 70
-                      ? <Badge text="✅ Tốt" color="#2ECC8A" />
+                      ? <Badge text="✅ Tốt" color="#00E08F" />
                       : lv.pctPrev >= 40
-                      ? <Badge text="⚡ Trung bình" color="#F5A623" />
+                      ? <Badge text="⚡ Trung bình" color="#FFAA2B" />
                       : lv.level === 'L0'
-                      ? <Badge text="📥 Đầu vào" color="#4F8EF7" />
-                      : <Badge text="⚠️ Cần cải thiện" color="#F75454" />
+                      ? <Badge text="📥 Đầu vào" color="#33A6FF" />
+                      : <Badge text="⚠️ Cần cải thiện" color="#FF4D6D" />
                     }
                   </td>
                 </tr>
@@ -148,7 +148,7 @@ export default function TabLevel({ data }: { data: DashboardData }) {
             {funnelSteps.map((step) => {
               const rate = step.fi > 0 ? step.fo / step.fi * 100 : 0
               const rateStr = step.fi > 0 ? `${rate.toFixed(1)}%` : '—'
-              const rateColor = rate >= 70 ? '#2ECC8A' : rate >= 40 ? '#F5A623' : '#F75454'
+              const rateColor = rate >= 70 ? '#00E08F' : rate >= 40 ? '#FFAA2B' : '#FF4D6D'
               return (
                 <div key={step.from+step.to} style={{
                   background:'var(--bg4)', borderRadius:8, padding:'10px 12px'
@@ -202,7 +202,7 @@ export default function TabLevel({ data }: { data: DashboardData }) {
                     {m.label}
                   </th>
                 ))}
-                <th style={{ padding:'8px 12px', textAlign:'center', color:'#F5A623',
+                <th style={{ padding:'8px 12px', textAlign:'center', color:'#FFAA2B',
                   fontSize:9, fontWeight:700, textTransform:'uppercase' }}>Tổng</th>
               </tr>
             </thead>
@@ -244,12 +244,12 @@ export default function TabLevel({ data }: { data: DashboardData }) {
                 </td>
                 {data.byMonth.map(m => (
                   <td key={m.month} style={{ padding:'10px 12px', textAlign:'center',
-                    fontFamily:'Space Mono,monospace', fontSize:13, fontWeight:700, color:'#4F8EF7' }}>
+                    fontFamily:'Space Mono,monospace', fontSize:13, fontWeight:700, color:'#33A6FF' }}>
                     {m.total}
                   </td>
                 ))}
                 <td style={{ padding:'10px 12px', textAlign:'center',
-                  fontFamily:'Space Mono,monospace', fontSize:14, fontWeight:700, color:'#FFD700' }}>
+                  fontFamily:'Space Mono,monospace', fontSize:14, fontWeight:700, color:'#FFD84D' }}>
                   {s.total}
                 </td>
               </tr>
