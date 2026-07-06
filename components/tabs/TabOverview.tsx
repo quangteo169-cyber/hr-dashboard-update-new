@@ -64,34 +64,53 @@ export default function TabOverview({ data }: { data: DashboardData }) {
   return (
     <div>
       {/* BỘ LỌC THÁNG */}
-      <div style={{ display:'flex', alignItems:'center', gap:8, marginBottom:16, flexWrap:'wrap' }}>
-        <span style={{ fontSize:11, color:'var(--text2)', marginRight:4 }}>📅 Xem theo:</span>
-        {[null, 1,2,3,4,5,6,7,8,9,10,11,12].map(m => (
-          <button
-            key={m ?? 'all'}
-            className="chip"
-            onClick={() => setSelectedMonth(m)}
-            style={{
-              padding:'5px 13px', borderRadius:999, border:'1px solid',
-              fontSize:11, fontWeight:600, cursor:'pointer', fontFamily:'inherit',
-              borderColor: selectedMonth===m ? 'transparent' : 'var(--border2)',
-              background: selectedMonth===m ? 'linear-gradient(135deg,#4F8EF7,#9B6FF7)' : 'transparent',
-              color: selectedMonth===m ? '#fff' : 'var(--text2)',
-              boxShadow: selectedMonth===m ? '0 5px 14px -6px rgba(99,125,247,.8)' : 'none',
-            }}
-          >
-            {m === null ? 'Cả năm' : `T${m}`}
-          </button>
-        ))}
-      </div>
-
-      <div style={{ marginBottom:12, fontSize:12, color:'var(--text2)' }}>
-        Đang xem: <b style={{ color:'var(--text)' }}>{monthLabel}</b>
-        {selectedMonth !== null && (
-          <span style={{ color:'#4F8EF7', marginLeft:8 }}>
-            — {s.total} CV
+      <div className="ui-card" style={{
+        display:'flex', alignItems:'center', gap:10, marginBottom:16, flexWrap:'wrap',
+        padding:'12px 16px', borderRadius:14,
+      }}>
+        <span style={{
+          fontSize:11, fontWeight:700, color:'var(--text2)', marginRight:2,
+          display:'inline-flex', alignItems:'center', gap:6,
+          textTransform:'uppercase', letterSpacing:'.6px',
+        }}>
+          <span style={{ width:4, height:14, borderRadius:2, background:'var(--accent-grad)' }} />
+          📅 Xem theo
+        </span>
+        <div style={{ display:'flex', alignItems:'center', gap:5, flexWrap:'wrap',
+          background:'var(--bg4)', border:'1px solid var(--border)',
+          borderRadius:999, padding:4 }}>
+          {[null, 1,2,3,4,5,6,7,8,9,10,11,12].map(m => (
+            <button
+              key={m ?? 'all'}
+              className="chip"
+              onClick={() => setSelectedMonth(m)}
+              style={{
+                padding:'5px 13px', borderRadius:999, border:'1px solid transparent',
+                fontSize:11, fontWeight:600, cursor:'pointer', fontFamily:'inherit',
+                background: selectedMonth===m ? 'linear-gradient(135deg,#4F8EF7,#9B6FF7)' : 'transparent',
+                color: selectedMonth===m ? '#fff' : 'var(--text2)',
+                boxShadow: selectedMonth===m
+                  ? '0 4px 12px -4px rgba(99,125,247,.75), inset 0 1px 0 rgba(255,255,255,.22)'
+                  : 'none',
+              }}
+            >
+              {m === null ? 'Cả năm' : `T${m}`}
+            </button>
+          ))}
+        </div>
+        <div style={{
+          marginLeft:'auto', display:'inline-flex', alignItems:'center', gap:8,
+          background:'color-mix(in srgb, var(--blue) 10%, var(--bg4))',
+          border:'1px solid color-mix(in srgb, var(--blue) 30%, transparent)',
+          borderRadius:999, padding:'6px 14px', whiteSpace:'nowrap',
+        }}>
+          <span style={{ fontSize:10, color:'var(--text2)' }}>Đang xem</span>
+          <span style={{ fontSize:12, fontWeight:700, color:'var(--text)' }}>{monthLabel}</span>
+          <span style={{ width:1, height:12, background:'var(--border2)' }} />
+          <span style={{ fontFamily:'Space Grotesk,Be Vietnam Pro,sans-serif', fontSize:12, fontWeight:700, color:'var(--blue)' }}>
+            {s.total} CV
           </span>
-        )}
+        </div>
       </div>
 
       {/* KPI ROW 1 */}
