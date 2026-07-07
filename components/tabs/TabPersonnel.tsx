@@ -4,7 +4,7 @@ import type { DashboardData, PersonnelItem } from '@/lib/sheets'
 import { Card, CardTitle, KpiCard, Grid, SectionHeader, Space } from '../ui'
 import {
   BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell,
-  PieChart, Pie, Legend, ComposedChart, Line, CartesianGrid,
+  PieChart, Pie,
 } from 'recharts'
 
 const pct = (n: number, d: number) => d > 0 ? `${(n / d * 100).toFixed(1)}%` : '—'
@@ -89,9 +89,6 @@ export default function TabPersonnel({ data }: { data: DashboardData }) {
     { label: 'Nhân sự Nam', value: p.male },
     { label: 'Nhân sự Nữ', value: p.female },
   ]
-  const flowData = p.flow.map(f => ({
-    name: `T${f.month}`, 'Nhận việc': f.hires, 'Nghỉ việc': f.leaves, 'Tăng ròng': f.hires - f.leaves,
-  }))
 
   return (
     <div>
@@ -130,27 +127,6 @@ export default function TabPersonnel({ data }: { data: DashboardData }) {
 
       {/* Bộ phận */}
       <BarBlock title="🗂️ Nhân Sự Theo Bộ Phận" sub="Số lượng theo từng bộ phận (ẩn bộ phận = 0)" data={p.byDepartment} color="#B44CFF" />
-
-      <Space h={16} />
-
-      {/* Biến động theo tháng */}
-      <Card>
-        <CardTitle sub="Số nhân sự nhận việc và nghỉ việc theo từng tháng, kèm mức tăng ròng">
-          📈 Biến Động Nhân Sự Theo Tháng
-        </CardTitle>
-        <ResponsiveContainer width="100%" height={300}>
-          <ComposedChart data={flowData} margin={{ left: 0, right: 10, top: 10 }}>
-            <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" vertical={false} />
-            <XAxis dataKey="name" tick={{ fill: 'var(--text2)', fontSize: 10 }} axisLine={false} tickLine={false} />
-            <YAxis tick={{ fill: 'var(--text2)', fontSize: 10 }} axisLine={false} tickLine={false} />
-            <Tooltip contentStyle={tooltipStyle} cursor={{ fill: 'rgba(255,255,255,0.04)' }} />
-            <Legend wrapperStyle={{ fontSize: 11 }} />
-            <Bar dataKey="Nhận việc" fill="#00E08F" radius={[4, 4, 0, 0]} barSize={14} />
-            <Bar dataKey="Nghỉ việc" fill="#FF4D6D" radius={[4, 4, 0, 0]} barSize={14} />
-            <Line type="monotone" dataKey="Tăng ròng" stroke="#FFAA2B" strokeWidth={2} dot={{ r: 3 }} />
-          </ComposedChart>
-        </ResponsiveContainer>
-      </Card>
     </div>
   )
 }
