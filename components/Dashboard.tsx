@@ -34,7 +34,14 @@ export default function Dashboard({ data: initialData }: { data: DashboardData }
   const [countdown, setCountdown] = useState(REFRESH_SEC)
   const [refreshing, setRefreshing] = useState(false)
   const [lastUpdated, setLastUpdated] = useState(initialData.updatedAt)
+  const [menuOpen, setMenuOpen] = useState(false)
   const fetchingRef = useRef(false)
+
+  // Khóa cuộn nền khi menu trượt đang mở
+  useEffect(() => {
+    document.body.style.overflow = menuOpen ? 'hidden' : ''
+    return () => { document.body.style.overflow = '' }
+  }, [menuOpen])
 
   // Fetch dữ liệu mới từ API
   const fetchData = useCallback(async () => {
@@ -124,7 +131,18 @@ export default function Dashboard({ data: initialData }: { data: DashboardData }
       {/* HEADER */}
       <header className={styles.header}>
         <div className={styles.headerLeft}>
-          <div className={styles.logo}>👥</div>
+          {/* Nút mở menu trượt — chỉ hiện trên mobile */}
+          <button
+            className={styles.menuBtn}
+            onClick={() => setMenuOpen(true)}
+            aria-label="Mở menu điều hướng"
+          >
+            ☰
+          </button>
+          <div className={styles.logo}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/icons/icon-192.png" alt="HQ Group" />
+          </div>
           <div>
             <div className={styles.title}>DASHBOARD BÁO CÁO TUYỂN DỤNG</div>
             <div className={styles.subtitle}>HQ Group — Phòng Nhân Sự & Tuyển Dụng</div>
@@ -162,7 +180,7 @@ export default function Dashboard({ data: initialData }: { data: DashboardData }
         </div>
       </header>
 
-      {/* TABS */}
+      {/* TABS — thanh ngang trên desktop, ẩn trên mobile (thay bằng drawer) */}
       <nav className={styles.tabs}>
         {TABS.map(t => (
           <button
@@ -174,6 +192,33 @@ export default function Dashboard({ data: initialData }: { data: DashboardData }
           </button>
         ))}
       </nav>
+
+      {/* DRAWER MOBILE — menu trượt từ trái */}
+      <div
+        className={`${styles.backdrop} ${menuOpen ? styles.backdropOpen : ''}`}
+        onClick={() => setMenuOpen(false)}
+      />
+      <aside className={`${styles.drawer} ${menuOpen ? styles.drawerOpen : ''}`}>
+        <div className={styles.drawerTop}>
+          <span className={styles.drawerTitle}>📊 Báo Cáo Tuyển Dụng</span>
+          <button
+            className={styles.drawerClose}
+            onClick={() => setMenuOpen(false)}
+            aria-label="Đóng menu"
+          >
+            ✕
+          </button>
+        </div>
+        {TABS.map(t => (
+          <button
+            key={t.id}
+            className={`${styles.drawerItem} ${tab === t.id ? styles.drawerItemActive : ''}`}
+            onClick={() => { setTab(t.id); setMenuOpen(false) }}
+          >
+            <span className={styles.drawerIcon}>{t.icon}</span> {t.label}
+          </button>
+        ))}
+      </aside>
 
       {/* CONTENT */}
       <main className={styles.content}>

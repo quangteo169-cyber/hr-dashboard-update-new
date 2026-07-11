@@ -35,12 +35,13 @@
 .headerLeft { display:flex; align-items:center; gap:14px; }
 .logo {
   width:44px; height:44px; border-radius:12px;
-  background:linear-gradient(140deg,#00C8FF,#7C4DFF 55%,#FF4ECD);
+  background:#fff;
   display:flex; align-items:center; justify-content:center; font-size:20px;
   box-shadow: 0 6px 18px -6px rgba(0,200,255,.75), inset 0 1px 0 rgba(255,255,255,.25);
-  position:relative; flex-shrink:0;
+  position:relative; flex-shrink:0; overflow:hidden;
   animation: logoGlow 5s ease-in-out infinite;
 }
+.logo img { width:100%; height:100%; object-fit:contain; display:block; }
 @keyframes logoGlow {
   0%, 100% { box-shadow: 0 6px 18px -6px rgba(0,200,255,.75),  inset 0 1px 0 rgba(255,255,255,.25); }
   50%      { box-shadow: 0 8px 26px -6px rgba(255,78,205,.8), inset 0 1px 0 rgba(255,255,255,.25); }
@@ -157,19 +158,83 @@
   }
   .period { font-size:15px; }
 
-  /* Tab bar: dính trên cùng khi cuộn, vuốt ngang được */
-  .tabs {
-    position:sticky; top:0; z-index:5;
-    padding:8px 12px;
-    -webkit-overflow-scrolling:touch;
-    scrollbar-width:none;
-  }
-  .tabs::-webkit-scrollbar { display:none; }
-  .tab { padding:8px 12px; font-size:12px; }
+  /* Tab bar ngang ẩn đi — điều hướng chuyển vào menu trượt bên trái */
+  .tabs { display:none; }
 
   .content { padding:14px 10px; }
 }
 @media (max-width: 400px) {
   .title { font-size:12px; }
   .content { padding:12px 8px; }
+}
+
+/* ── MOBILE DRAWER — menu trượt từ trái ─────────────────────── */
+/* Mặc định (desktop) ẩn hết; chỉ bật trong media query mobile */
+.menuBtn, .backdrop, .drawer { display:none; }
+
+@media (max-width: 768px) {
+  .menuBtn {
+    display:flex; align-items:center; justify-content:center;
+    width:38px; height:38px; border-radius:10px; flex-shrink:0;
+    border:1px solid var(--border); background:var(--bg3);
+    color:var(--text); font-size:16px; cursor:pointer;
+    box-shadow:var(--shadow-sm); font-family:inherit;
+  }
+  .menuBtn:active { background:var(--bg4); }
+
+  .backdrop {
+    display:block; position:fixed; inset:0; z-index:55;
+    background:rgba(0,0,0,.55);
+    backdrop-filter:blur(2px);
+    opacity:0; pointer-events:none;
+    transition:opacity .25s ease;
+  }
+  .backdropOpen { opacity:1; pointer-events:auto; }
+
+  .drawer {
+    display:flex; flex-direction:column; gap:3px;
+    position:fixed; top:0; left:0; bottom:0; z-index:60;
+    width:min(78vw, 300px);
+    background:var(--bg2);
+    border-right:1px solid var(--border);
+    padding:14px 12px;
+    transform:translateX(-105%);
+    transition:transform .28s cubic-bezier(.22,1,.36,1);
+    box-shadow:24px 0 48px -24px rgba(0,0,0,.7);
+    overflow-y:auto;
+  }
+  .drawerOpen { transform:translateX(0); }
+}
+
+.drawerTop {
+  display:flex; align-items:center; justify-content:space-between; gap:8px;
+  padding:4px 6px 12px;
+  border-bottom:1px solid var(--border);
+  margin-bottom:10px;
+}
+.drawerTitle {
+  font-family:'Chakra Petch','Be Vietnam Pro',sans-serif;
+  font-size:13px; font-weight:700; letter-spacing:.04em; text-transform:uppercase;
+  background:linear-gradient(90deg,#00C8FF,#FF4ECD);
+  -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;
+}
+.drawerClose {
+  width:28px; height:28px; border-radius:8px; flex-shrink:0;
+  border:1px solid var(--border); background:var(--bg3);
+  color:var(--text2); font-size:12px; cursor:pointer; font-family:inherit;
+}
+.drawerItem {
+  display:flex; align-items:center; gap:11px;
+  padding:11px 12px; border-radius:10px;
+  border:1px solid transparent; background:transparent;
+  color:var(--text2); font-size:13px; font-weight:500;
+  cursor:pointer; text-align:left; font-family:inherit; width:100%;
+  transition:background .15s ease, color .15s ease;
+}
+.drawerItem:active { background:color-mix(in srgb, var(--bg3) 85%, transparent); color:var(--text); }
+.drawerIcon { font-size:15px; width:20px; text-align:center; flex-shrink:0; }
+.drawerItemActive {
+  color:#fff; font-weight:600;
+  background:linear-gradient(135deg,#0096FF,#7C4DFF);
+  box-shadow:0 6px 20px -8px rgba(0,150,255,.9), inset 0 1px 0 rgba(255,255,255,.22);
 }
