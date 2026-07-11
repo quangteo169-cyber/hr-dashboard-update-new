@@ -2,7 +2,7 @@
 // components/tabs/TabOrders.tsx
 import { useState, useMemo } from 'react'
 import type { DashboardData, OrderRow } from '@/lib/sheets'
-import { Card, CardTitle, KpiCard, Space } from '../ui'
+import { Card, CardTitle, Grid, KpiCard, Space } from '../ui'
 
 const STATUS_CONFIG: Record<string, { color: string; icon: string }> = {
   'Đang tuyển': { color: '#FFAA2B', icon: '🔥' },
@@ -100,7 +100,7 @@ export default function TabOrders({ data }: { data: DashboardData }) {
   return (
     <div>
       {/* KPI CARDS */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 12, marginBottom: 16 }}>
+      <Grid cols={4} gap={12} style={{ marginBottom: 16 }}>
         {[
           { label: 'Tổng vị trí',      value: filtered.length, icon: '📋', color: '#33A6FF', sub: `${dangTuyen} đang tuyển` },
           { label: 'Tổng cần tuyển',   value: tongCanTuyen,    icon: '🎯', color: '#B44CFF', sub: `chỉ tiêu` },
@@ -109,10 +109,10 @@ export default function TabOrders({ data }: { data: DashboardData }) {
         ].map(k => (
           <KpiCard key={k.label} label={k.label} value={k.value} sub={k.sub} color={k.color} icon={k.icon} />
         ))}
-      </div>
+      </Grid>
 
       {/* STATUS SUMMARY ROW */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 12, marginBottom: 16 }}>
+      <Grid cols={3} gap={12} style={{ marginBottom: 16 }}>
         {[
           { label: 'Đang tuyển', count: dangTuyen,  color: '#FFAA2B', icon: '🔥' },
           { label: 'Hoàn thành', count: hoanThanh,  color: '#00E08F', icon: '✅' },
@@ -144,7 +144,7 @@ export default function TabOrders({ data }: { data: DashboardData }) {
             </div>
           </div>
         ))}
-      </div>
+      </Grid>
 
       {/* FILTERS */}
       <div style={{ display: 'flex', gap: 10, marginBottom: 14, flexWrap: 'wrap', alignItems: 'center' }}>

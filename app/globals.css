@@ -88,6 +88,9 @@ body {
   border-color: var(--border2);
   box-shadow: var(--shadow-lg), inset 0 1px 0 var(--card-hi);
 }
+@media (max-width: 640px) {
+  .ui-card { padding: 14px; border-radius: 12px; }
+}
 
 /* Table rows inside any card — hover highlight (beats inline zebra bg) */
 .ui-card tbody tr { transition: background .12s ease; }
@@ -109,6 +112,26 @@ body {
 /* Filter chips (month selector, …) */
 .chip { transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease, color .15s ease, background .15s ease; }
 .chip:hover { transform: translateY(-1px); box-shadow: 0 4px 12px -6px rgba(51,166,255,.55); }
+
+/* Grid — số cột đặt qua --cols, tự giảm dần trên màn hình nhỏ */
+.ui-grid {
+  display: grid;
+  grid-template-columns: repeat(var(--cols, 4), minmax(0, 1fr));
+  gap: var(--gap, 12px);
+}
+@media (max-width: 1280px) {
+  .ui-grid[data-cols="5"] { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@media (max-width: 1024px) {
+  .ui-grid[data-cols="4"],
+  .ui-grid[data-cols="5"] { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 640px) {
+  /* Card lớn (biểu đồ, phễu…) xếp dọc; KPI nhỏ giữ 2 cột cho gọn */
+  .ui-grid { grid-template-columns: minmax(0, 1fr); }
+  .ui-grid[data-cols="4"],
+  .ui-grid[data-cols="5"] { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
 
 /* Bars that grow in on mount */
 .ui-grow { animation: growW .8s cubic-bezier(.22, 1, .36, 1) both; }

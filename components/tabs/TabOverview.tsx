@@ -157,7 +157,7 @@ export default function TabOverview({ data }: { data: DashboardData }) {
       <Space h={20} />
 
       {/* CHARTS ROW */}
-      <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:16 }}>
+      <Grid cols={2} gap={16}>
 
         {/* Phễu */}
         <Card>
@@ -213,12 +213,12 @@ export default function TabOverview({ data }: { data: DashboardData }) {
             ))}
           </div>
         </Card>
-      </div>
+      </Grid>
 
       <Space h={16} />
 
       {/* Source + NV */}
-      <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:16 }}>
+      <Grid cols={2} gap={16}>
         <Card>
           <CardTitle sub={`Top nguồn CV theo số lượng — ${monthLabel}`}>📡 Nguồn CV</CardTitle>
           {bySource.slice(0,6).map((src, i) => (
@@ -262,7 +262,7 @@ export default function TabOverview({ data }: { data: DashboardData }) {
             </div>
           ))}
         </Card>
-      </div>
+      </Grid>
     </div>
   )
 }

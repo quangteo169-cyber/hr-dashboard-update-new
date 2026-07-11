@@ -1,7 +1,7 @@
 'use client'
 // components/tabs/TabLevel.tsx
 import type { DashboardData } from '@/lib/sheets'
-import { Card, CardTitle, SectionHeader, Space, Table, Badge } from '../ui'
+import { Card, CardTitle, Grid, SectionHeader, Space, Table, Badge } from '../ui'
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell, RadialBarChart, RadialBar, Legend } from 'recharts'
 
 const p = (n: number, d: number) => d > 0 ? `${(n/d*100).toFixed(1)}%` : '—'
@@ -120,7 +120,7 @@ export default function TabLevel({ data }: { data: DashboardData }) {
       <Space h={16} />
 
       {/* CHARTS */}
-      <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:16 }}>
+      <Grid cols={2} gap={16}>
 
         {/* Bar chart số lượng */}
         <Card>
@@ -183,7 +183,7 @@ export default function TabLevel({ data }: { data: DashboardData }) {
             })}
           </div>
         </Card>
-      </div>
+      </Grid>
 
       <Space h={16} />
 

@@ -1,7 +1,7 @@
 'use client'
 // components/tabs/TabFunnel.tsx
 import type { DashboardData } from '@/lib/sheets'
-import { Card, CardTitle, Space, FunnelBar, Table } from '../ui'
+import { Card, CardTitle, Grid, Space, FunnelBar, Table } from '../ui'
 
 const p = (n: number, d: number) => d > 0 ? `${(n/d*100).toFixed(1)}%` : '—'
 
@@ -28,7 +28,7 @@ export default function TabFunnel({ data }: { data: DashboardData }) {
 
   return (
     <div>
-      <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:16 }}>
+      <Grid cols={2} gap={16}>
         <Card>
           <CardTitle sub="Số lượng tại mỗi stage — tỷ lệ trên tổng CV">📈 Phễu Chi Tiết</CardTitle>
           <div style={{ display:'flex', flexDirection:'column', gap:7 }}>
@@ -79,7 +79,7 @@ export default function TabFunnel({ data }: { data: DashboardData }) {
             })}
           </div>
         </Card>
-      </div>
+      </Grid>
 
       <Space h={16} />
       <Card>

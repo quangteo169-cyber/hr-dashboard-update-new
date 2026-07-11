@@ -58,7 +58,7 @@ export function KpiCard({
           </div>
         )}
       </div>
-      <div style={{ fontFamily:'Chakra Petch,Be Vietnam Pro,sans-serif', fontSize:32,
+      <div style={{ fontFamily:'Chakra Petch,Be Vietnam Pro,sans-serif', fontSize:'clamp(24px, 7vw, 32px)',
         fontWeight:700, letterSpacing:'-0.01em', color:c, lineHeight:1, marginBottom:6,
         textShadow:`0 0 26px ${c}60` }}>
         {value}
@@ -77,15 +77,16 @@ export function KpiCard({
 }
 
 /* ── GRID ─────────────────────────────────────────────────── */
-export function Grid({ cols, gap, children }: {
-  cols?: number; gap?: number; children: React.ReactNode
+/* Số cột tự giảm trên màn hình nhỏ — rules ở globals.css (.ui-grid) */
+export function Grid({ cols, gap, children, style }: {
+  cols?: number; gap?: number; children: React.ReactNode; style?: React.CSSProperties
 }) {
   return (
-    <div style={{
-      display:'grid',
-      gridTemplateColumns: `repeat(${cols||4}, minmax(0,1fr))`,
-      gap: gap || 12,
-    }}>
+    <div className="ui-grid" data-cols={cols || 4} style={{
+      ['--cols' as string]: cols || 4,
+      ['--gap' as string]: `${gap || 12}px`,
+      ...style,
+    } as React.CSSProperties}>
       {children}
     </div>
   )
@@ -175,7 +176,7 @@ export function FunnelBar({ label, count, total, color, sublabel }: {
   const w = total > 0 ? count / total * 100 : 0
   return (
     <div style={{ display:'flex', alignItems:'center', gap:10 }}>
-      <div style={{ width:160, fontSize:10, color:'var(--text2)', textAlign:'right', flexShrink:0 }}>
+      <div style={{ width:'clamp(84px, 24vw, 160px)', fontSize:10, color:'var(--text2)', textAlign:'right', flexShrink:0 }}>
         {label}
       </div>
       <div style={{ flex:1, height:30, background:'var(--bg4)', borderRadius:8, overflow:'hidden', position:'relative',
@@ -197,7 +198,7 @@ export function FunnelBar({ label, count, total, color, sublabel }: {
           <span className="ui-shine" />
         </div>
       </div>
-      <div style={{ width:90, textAlign:'right', flexShrink:0 }}>
+      <div style={{ width:'clamp(56px, 15vw, 90px)', textAlign:'right', flexShrink:0 }}>
         <div style={{ fontFamily:'Space Mono,monospace', fontSize:13,
           fontWeight:700, color }}>
           {count}
