@@ -29,19 +29,21 @@ Dashboard tự động cập nhật mỗi **5 phút** (revalidate: 300s).
 
 ## 📱 Cài đặt như app trên điện thoại (PWA)
 
-Dashboard đã hỗ trợ PWA — sau khi deploy (bắt buộc HTTPS, ví dụ Vercel), mở link dashboard trên điện thoại rồi:
+Dashboard đã hỗ trợ PWA — sau khi deploy (bắt buộc HTTPS, ví dụ Vercel), mở link dashboard trên điện thoại:
 
 **Android (Chrome):**
-1. Mở dashboard trong Chrome
-2. Bấm menu **⋮** → **Thêm vào Màn hình chính** (Add to Home screen) → **Cài đặt**
-3. Icon HQ Group xuất hiện trên màn hình chính, mở lên chạy toàn màn hình như app
+1. Mở dashboard bằng Chrome
+2. App tự hiện banner **📲 Cài đặt** ở cuối màn hình — bấm **Cài đặt** là xong
+   (hoặc menu **⋮** → **Thêm vào màn hình chính**)
+3. Icon HQ xuất hiện trên màn hình chính, mở lên chạy toàn màn hình như app thật (không còn thanh địa chỉ)
 
 **iPhone / iPad (Safari):**
-1. Mở dashboard trong Safari
-2. Bấm nút **Chia sẻ** (hình vuông mũi tên ⬆️) → **Thêm vào MH chính** (Add to Home Screen) → **Thêm**
-3. Icon HQ Group xuất hiện trên màn hình chính, mở lên chạy toàn màn hình như app
+1. Mở dashboard bằng **Safari** (bắt buộc Safari, không phải Chrome)
+2. App hiện banner hướng dẫn — bấm nút **Chia sẻ** (⬆️) → **Thêm vào MH chính** → **Thêm**
+3. Mở app từ icon HQ trên màn hình chính
 
-> File cấu hình: `public/manifest.json` + bộ icon trong `public/icons/`
+> Cấu hình: `public/manifest.json`, bộ icon `public/icons/`, service worker `public/sw.js`,
+> banner cài đặt `components/PwaInstall.tsx`
 
 ---
 
