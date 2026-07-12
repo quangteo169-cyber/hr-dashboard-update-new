@@ -3,6 +3,12 @@
 import { useState, useMemo } from 'react'
 import type { DashboardData, OrderRow } from '@/lib/sheets'
 import { Card, CardTitle, Grid, KpiCard, Space } from '../ui'
+import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from 'recharts'
+
+const tooltipStyle = {
+  background: 'var(--bg4)', border: '1px solid var(--border)',
+  borderRadius: 8, fontSize: 11,
+} as const
 
 const STATUS_CONFIG: Record<string, { color: string; icon: string }> = {
   'Đang tuyển': { color: '#FFAA2B', icon: '🔥' },
@@ -74,6 +80,20 @@ export default function TabOrders({ data }: { data: DashboardData }) {
   const dangTuyen     = filtered.filter(o => o.trangThai === 'Đang tuyển').length
   const hoanThanh     = filtered.filter(o => o.trangThai === 'Hoàn thành').length
   const tamDung       = filtered.filter(o => o.trangThai === 'Tạm dừng').length
+
+  // Gom theo team cho biểu đồ — tính trên dữ liệu đã lọc
+  const byTeam = useMemo(() => {
+    const map = new Map<string, { name: string; 'Cần tuyển': number; 'Đã nhận việc': number }>()
+    for (const o of filtered) {
+      const key = o.team || 'Khác'
+      if (!map.has(key)) map.set(key, { name: key, 'Cần tuyển': 0, 'Đã nhận việc': 0 })
+      const t = map.get(key)!
+      t['Cần tuyển']     += o.soLuong
+      t['Đã nhận việc'] += o.daNhanViec
+    }
+    return [...map.values()].sort((a, b) => b['Cần tuyển'] - a['Cần tuyển'])
+  }, [filtered])
+  const teamChartHeight = Math.max(190, byTeam.length * 44 + 50)
 
   const inputStyle: React.CSSProperties = {
     background: 'var(--bg4)', border: '1px solid var(--border)', borderRadius: 8,
@@ -171,6 +191,28 @@ export default function TabOrders({ data }: { data: DashboardData }) {
           <b style={{ color: 'var(--text)' }}>{filtered.length}</b> / {orders.length} đơn hàng
         </div>
       </div>
+
+      {/* BIỂU ĐỒ THEO TEAM — theo bộ lọc hiện tại */}
+      {byTeam.length > 0 && (
+        <Card style={{ marginBottom: 16 }}>
+          <CardTitle sub="Chỉ tiêu cần tuyển và số đã nhận việc của từng team — theo bộ lọc hiện tại">
+            📊 Tiến Độ Tuyển Theo Team
+          </CardTitle>
+          <ResponsiveContainer width="100%" height={teamChartHeight}>
+            <BarChart data={byTeam} layout="vertical" barGap={2} margin={{ left: 4, right: 34 }}>
+              <XAxis type="number" tick={{ fill: 'var(--text2)', fontSize: 10 }} axisLine={false} tickLine={false} />
+              <YAxis dataKey="name" type="category" width={110}
+                tick={{ fill: 'var(--text2)', fontSize: 10 }} axisLine={false} tickLine={false} />
+              <Tooltip contentStyle={tooltipStyle} cursor={{ fill: 'rgba(255,255,255,0.04)' }}
+                labelStyle={{ color: 'var(--text)', fontWeight: 600 }} itemStyle={{ color: 'var(--text2)' }} />
+              <Legend wrapperStyle={{ fontSize: 11 }} />
+              <Bar dataKey="Cần tuyển" fill="#B44CFF" radius={[0, 4, 4, 0]} maxBarSize={12}
+                label={{ position: 'right', fill: 'var(--text2)', fontSize: 9 }} />
+              <Bar dataKey="Đã nhận việc" fill="#00E08F" radius={[0, 4, 4, 0]} maxBarSize={12} />
+            </BarChart>
+          </ResponsiveContainer>
+        </Card>
+      )}
 
       {/* TABLE */}
       <Card style={{ padding: 0, overflow: 'hidden' }}>
