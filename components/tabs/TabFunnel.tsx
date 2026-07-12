@@ -2,8 +2,14 @@
 // components/tabs/TabFunnel.tsx
 import type { DashboardData } from '@/lib/sheets'
 import { Card, CardTitle, Grid, Space, FunnelBar, Table } from '../ui'
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts'
 
 const p = (n: number, d: number) => d > 0 ? `${(n/d*100).toFixed(1)}%` : '—'
+
+const tooltipStyle = {
+  background: 'var(--bg4)', border: '1px solid var(--border)',
+  borderRadius: 8, fontSize: 11,
+} as const
 
 export default function TabFunnel({ data }: { data: DashboardData }) {
   const { stats: s } = data
@@ -25,6 +31,16 @@ export default function TabFunnel({ data }: { data: DashboardData }) {
     m.thamGiaPV, m.passPV, m.nhanViec, m.d10,
     p(m.thamGiaPV,m.total), p(m.nhanViec,m.total)
   ])
+
+  // Xu hướng tỷ lệ chuyển đổi theo tháng — chỉ tính tháng có CV
+  const trend = data.byMonth
+    .filter(m => m.total > 0)
+    .map(m => ({
+      name: m.label,
+      'L1 HR Pass':   +(m.hrPass    / m.total * 100).toFixed(1),
+      'L3A Tới PV':   +(m.thamGiaPV / m.total * 100).toFixed(1),
+      'L8 Nhận việc': +(m.nhanViec  / m.total * 100).toFixed(1),
+    }))
 
   return (
     <div>
@@ -80,6 +96,30 @@ export default function TabFunnel({ data }: { data: DashboardData }) {
           </div>
         </Card>
       </Grid>
+
+      {trend.length > 1 && (
+        <>
+          <Space h={16} />
+          <Card>
+            <CardTitle sub="Tỷ lệ % trên tổng CV của tháng — theo dõi chất lượng phễu qua thời gian">
+              📈 Xu Hướng Tỷ Lệ Chuyển Đổi Theo Tháng
+            </CardTitle>
+            <ResponsiveContainer width="100%" height={240}>
+              <LineChart data={trend}>
+                <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
+                <XAxis dataKey="name" tick={{ fill: 'var(--text2)', fontSize: 11 }} axisLine={false} tickLine={false} />
+                <YAxis unit="%" tick={{ fill: 'var(--text2)', fontSize: 10 }} axisLine={false} tickLine={false} />
+                <Tooltip contentStyle={tooltipStyle} formatter={(v: number) => `${v}%`}
+                  labelStyle={{ color: 'var(--text)', fontWeight: 600 }} itemStyle={{ color: 'var(--text2)' }} />
+                <Legend wrapperStyle={{ fontSize: 11 }} />
+                <Line type="monotone" dataKey="L1 HR Pass"   stroke="#33A6FF" strokeWidth={2} dot={{ r: 3.5 }} />
+                <Line type="monotone" dataKey="L3A Tới PV"   stroke="#B44CFF" strokeWidth={2} dot={{ r: 3.5 }} />
+                <Line type="monotone" dataKey="L8 Nhận việc" stroke="#00E08F" strokeWidth={2} dot={{ r: 3.5 }} />
+              </LineChart>
+            </ResponsiveContainer>
+          </Card>
+        </>
+      )}
 
       <Space h={16} />
       <Card>

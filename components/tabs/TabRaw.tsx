@@ -2,13 +2,16 @@
 // components/tabs/TabRaw.tsx
 import { useState, useMemo } from 'react'
 import type { DashboardData } from '@/lib/sheets'
-import { Card, Badge } from '../ui'
+import { Card, CardTitle, Badge } from '../ui'
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell } from 'recharts'
 
 const LEVEL_COLORS: Record<string, string> = {
   L0:'#6B7280', L1:'#33A6FF', L3:'#FFAA2B', L3X:'#FF4D6D',
   L3A:'#B44CFF', L4A:'#00E5D0', L4B:'#FF4D6D',
   L7:'#FFAA2B', L8:'#00E08F', L9:'#FFD84D',
 }
+
+const LEVEL_ORDER = ['L0','L1','L3','L3X','L3A','L4A','L4B','L7','L8','L9']
 
 export default function TabRaw({ data }: { data: DashboardData }) {
   const [search, setSearch]           = useState('')
@@ -41,6 +44,16 @@ export default function TabRaw({ data }: { data: DashboardData }) {
 
   const totalPages = Math.ceil(filtered.length / PER_PAGE)
   const paged = filtered.slice((page-1)*PER_PAGE, page*PER_PAGE)
+
+  // Phân bố level của tập UV đã lọc — mỗi level giữ đúng màu định danh
+  const levelDist = useMemo(() => {
+    const counts = new Map<string, number>()
+    for (const c of filtered) counts.set(c.level, (counts.get(c.level) || 0) + 1)
+    return LEVEL_ORDER
+      .filter(lv => (counts.get(lv) || 0) > 0)
+      .map(lv => ({ name: lv, value: counts.get(lv)! }))
+  }, [filtered])
+  const distHeight = Math.max(150, levelDist.length * 28 + 40)
 
   const inputStyle: React.CSSProperties = {
     background:'var(--bg4)', border:'1px solid var(--border)', borderRadius:6,
@@ -82,6 +95,28 @@ export default function TabRaw({ data }: { data: DashboardData }) {
           Hiển thị <b style={{ color:'var(--text)' }}>{filtered.length}</b> / {data.candidates.length} UV
         </div>
       </div>
+
+      {/* PHÂN BỐ LEVEL — theo bộ lọc hiện tại */}
+      {levelDist.length > 0 && (
+        <Card style={{ marginBottom:14 }}>
+          <CardTitle sub="Số UV tại mỗi level trong tập dữ liệu đang lọc">📊 Phân Bố Level</CardTitle>
+          <ResponsiveContainer width="100%" height={distHeight}>
+            <BarChart data={levelDist} layout="vertical" margin={{ left: 4, right: 34 }}>
+              <XAxis type="number" tick={{ fill:'var(--text2)', fontSize:10 }} axisLine={false} tickLine={false} />
+              <YAxis dataKey="name" type="category" width={48}
+                tick={{ fill:'var(--text2)', fontSize:10, fontFamily:'Space Mono,monospace' }}
+                axisLine={false} tickLine={false} />
+              <Tooltip cursor={{ fill:'rgba(255,255,255,0.04)' }}
+                contentStyle={{ background:'var(--bg4)', border:'1px solid var(--border)', borderRadius:8, fontSize:11 }}
+                labelStyle={{ color:'var(--text)', fontWeight:600 }} itemStyle={{ color:'var(--text2)' }} />
+              <Bar dataKey="value" name="Số UV" radius={[0, 4, 4, 0]} maxBarSize={14}
+                label={{ position:'right', fill:'var(--text2)', fontSize:10 }}>
+                {levelDist.map(d => <Cell key={d.name} fill={LEVEL_COLORS[d.name] || '#6B7280'} />)}
+              </Bar>
+            </BarChart>
+          </ResponsiveContainer>
+        </Card>
+      )}
 
       <Card style={{ padding:0, overflow:'hidden' }}>
         <div style={{ overflowX:'auto' }}>

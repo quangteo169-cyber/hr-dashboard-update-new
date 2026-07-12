@@ -3,8 +3,14 @@
 import { useState, useMemo } from 'react'
 import type { DashboardData, PositionStat } from '@/lib/sheets'
 import { Card, CardTitle, PctBar } from '../ui'
+import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from 'recharts'
 
 const p = (n: number, d: number) => d > 0 ? `${(n/d*100).toFixed(1)}%` : '—'
+
+const tooltipStyle = {
+  background: 'var(--bg4)', border: '1px solid var(--border)',
+  borderRadius: 8, fontSize: 11,
+} as const
 
 // dd/mm/yyyy -> số yyyymmdd để so sánh khoảng thời gian
 function dateStrToNum(s: string): number {
@@ -79,6 +85,12 @@ export default function TabPosition({ data }: { data: DashboardData }) {
 
   const hasFilter = filterPos !== 'all' || !!fromDate || !!toDate
 
+  // Top 10 vị trí cho biểu đồ — tính trên dữ liệu đã lọc
+  const chartData = rows.slice(0, 10).map(pos => ({
+    name: pos.viTri, 'Tổng CV': pos.total, 'Nhận việc': pos.nhanViec,
+  }))
+  const chartHeight = Math.max(200, chartData.length * 44 + 50)
+
   return (
     <Card>
       <CardTitle sub="Top vị trí tuyển dụng — lọc theo vị trí và khoảng thời gian tự chọn">💼 Báo Cáo Theo Vị Trí</CardTitle>
@@ -113,6 +125,29 @@ export default function TabPosition({ data }: { data: DashboardData }) {
           {(fromDate || toDate) && <span style={{ color: 'var(--text3)' }}> trong khoảng</span>}
         </div>
       </div>
+
+      {/* BIỂU ĐỒ TOP VỊ TRÍ — theo bộ lọc hiện tại */}
+      {chartData.length > 0 && (
+        <div style={{ marginBottom: 18 }}>
+          <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--text2)', margin: '4px 0 6px',
+            textTransform: 'uppercase', letterSpacing: '.5px' }}>
+            📊 Top {chartData.length} vị trí — Tổng CV & Nhận việc
+          </div>
+          <ResponsiveContainer width="100%" height={chartHeight}>
+            <BarChart data={chartData} layout="vertical" barGap={2} margin={{ left: 4, right: 34 }}>
+              <XAxis type="number" tick={{ fill: 'var(--text2)', fontSize: 10 }} axisLine={false} tickLine={false} />
+              <YAxis dataKey="name" type="category" width={150}
+                tick={{ fill: 'var(--text2)', fontSize: 10 }} axisLine={false} tickLine={false} />
+              <Tooltip contentStyle={tooltipStyle} cursor={{ fill: 'rgba(255,255,255,0.04)' }}
+                labelStyle={{ color: 'var(--text)', fontWeight: 600 }} itemStyle={{ color: 'var(--text2)' }} />
+              <Legend wrapperStyle={{ fontSize: 11 }} />
+              <Bar dataKey="Tổng CV" fill="#33A6FF" radius={[0, 4, 4, 0]} maxBarSize={12}
+                label={{ position: 'right', fill: 'var(--text2)', fontSize: 9 }} />
+              <Bar dataKey="Nhận việc" fill="#00E08F" radius={[0, 4, 4, 0]} maxBarSize={12} />
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
+      )}
 
       <div style={{ overflowX:'auto' }}>
         <table style={{ width:'100%', borderCollapse:'collapse', fontSize:11 }}>

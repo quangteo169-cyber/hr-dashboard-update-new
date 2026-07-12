@@ -3,7 +3,7 @@
 import type { DashboardData, PersonnelItem } from '@/lib/sheets'
 import { Card, CardTitle, KpiCard, Grid, SectionHeader, Space } from '../ui'
 import {
-  BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell,
+  BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer, Cell,
   PieChart, Pie,
 } from 'recharts'
 
@@ -106,6 +106,31 @@ export default function TabPersonnel({ data }: { data: DashboardData }) {
       </Grid>
 
       <Space h={16} />
+
+      {/* Biến động nhân sự 12 tháng */}
+      {p.flow.some(f => f.hires > 0 || f.leaves > 0) && (
+        <>
+          <Card>
+            <CardTitle sub="Số nhân sự nhận việc mới và nghỉ việc từng tháng trong năm">
+              📈 Biến Động Nhân Sự Theo Tháng
+            </CardTitle>
+            <ResponsiveContainer width="100%" height={220}>
+              <BarChart data={p.flow.map(f => ({
+                name: `T${f.month}`, 'Nhận việc': f.hires, 'Nghỉ việc': f.leaves,
+              }))} barGap={2}>
+                <XAxis dataKey="name" tick={{ fill: 'var(--text2)', fontSize: 11 }} axisLine={false} tickLine={false} />
+                <YAxis tick={{ fill: 'var(--text2)', fontSize: 10 }} axisLine={false} tickLine={false} allowDecimals={false} />
+                <Tooltip contentStyle={tooltipStyle} cursor={{ fill: 'rgba(255,255,255,0.04)' }}
+                  labelStyle={{ color: 'var(--text)', fontWeight: 600 }} itemStyle={{ color: 'var(--text2)' }} />
+                <Legend wrapperStyle={{ fontSize: 11 }} />
+                <Bar dataKey="Nhận việc" fill="#00E08F" radius={[4, 4, 0, 0]} maxBarSize={18} />
+                <Bar dataKey="Nghỉ việc" fill="#FF4D6D" radius={[4, 4, 0, 0]} maxBarSize={18} />
+              </BarChart>
+            </ResponsiveContainer>
+          </Card>
+          <Space h={16} />
+        </>
+      )}
 
       {/* Giới tính + Độ tuổi */}
       <Grid cols={2} gap={16}>
